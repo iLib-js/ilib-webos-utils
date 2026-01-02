@@ -1,7 +1,7 @@
 /*
  * case-filter.js - filter out cases with no issues on the summary page
  *
- * Copyright (c) 2025 JEDLSoft
+ * Copyright (c) 2026 JEDLSoft
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
