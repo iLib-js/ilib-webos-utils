@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en-KR" trgLang="de-DE" version="2.0">
+ <file id="app1_f1" original="app1">
+  <group id="app1_g1" name="javascript">
+   <unit id="app1_g1_1">
+    <segment>
+     <source>This string has multiple URLs in it: http://www.box.com and http://www.google.com</source>
+     <target>This string is missing one URL: http://www.google.com</target>
+    </segment>
+   </unit>
+   <unit id="app1_g1_2">
+     <segment>
+       <source>This string has multiple {params} in it: {sub}</source>
+       <target>This string is missing one URL: {sub}</target>
+     </segment>
+     </unit>
+  </group>
+ </file>
+</xliff>

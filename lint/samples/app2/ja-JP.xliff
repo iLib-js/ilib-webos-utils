@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en-KR" trgLang="ja-JP" version="2.0">
+ <file id="app2_f1" original="app2">
+  <group id="app2_g1" name="javascript">
+   <unit id="app2_g1_1">
+    <notes>
+     <note>menu name</note>
+    </notes>
+    <segment>
+     <source>{label} Settings</source>
+     <target>{label}設定</target>
+    </segment>
+   </unit>
+   <unit id="app2_g1_2">
+    <segment>
+     <source>button</source>
+     <target>ボタン</target>
+    </segment>
+   </unit>
+   <unit id="app2_g1_3">
+    <segment>
+     <source>Next</source>
+     <target>次へ</target>
+    </segment>
+   </unit>
+   <unit id="app2_g1_4">
+    <segment>
+     <source>Have a good evening.</source>
+     <target>素敵な夜をお過ごしください。</target>
+    </segment>
+  </unit>
+  </group>
+ </file>
+</xliff>
