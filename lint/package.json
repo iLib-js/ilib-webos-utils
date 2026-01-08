@@ -2,12 +2,11 @@
   "name": "ilib-webos-utils",
   "version": "1.0.0",
   "description": "Utils for webOS I18N/L10N tasks",
-  "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "execute-sample": "./execute-lint.sh ./samples",
+    "clean": "rm -rf Result tmp"
   },
-  "keywords": [],
   "author": {
       "name": "Goun Lee",
       "email": "goun.lee@lge.com"
