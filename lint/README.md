@@ -1,15 +1,13 @@
 # lint
-It provides a script to lint localization data and generate an HTML report.
-
-## execute-lint.sh
-
+It provides a script to lint localization data and generate an HTML report.  
 execute-lint.sh is a Bash script that runs ilib-lint
- on all subdirectories of a specified localization data directory and generates a consolidated HTML lint report from the results.
+on all subdirectories of a specified localization data directory and generates a consolidated HTML lint report from the results.
 
 ## Example Directory Structure
 ```bash
 project-root/
 ├── execute-lint.sh
+├── pre-requisite.sh
 ├── ilib-lint-config.json
 ├── convertHtml/
 │   └── convertHtml.js
@@ -17,23 +15,23 @@ project-root/
 └── tmp/               # Final HTML output directory
 ```
 
-## Prerequisites
-Ensure the following are installed:
-* Bash (macOS / Linux recommended)
-* Node.js (v14 or later)
-* npx
+## Prerequisites (pre-requisite.sh)
+This script automatically sets up the Node.js environment and prepares the system to run ilib-lint.
+It should be executed once before running the linting process or when setting up a new environment.
 
 Note: Before running the script, make sure to install the project dependencies by running:
 ```bash
-npm install
+./pre-requisite.sh
 ```
 This ensures that all required Node packages (including ilib-lint) are available.
 
-## Usage
+## Execute the script (execute-lint.sh)
+
+### Usage
 ```bash
 ./execute-lint.sh <LOCDATA_PATH> [OUTPUT_PATH]
 ```
-### Example
+#### Example
 ```bash
 ./execute-lint.sh ~/Source/localization-data RESULT
 
