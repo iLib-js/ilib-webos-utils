@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 set -e
 
 # Check and install NVM if not installed
@@ -18,12 +18,14 @@ export NVM_DIR="$HOME/.nvm"
 if nvm ls --no-colors | grep -q "lts"; then
   echo "Node.js LTS already installed. Skipping installation."
 else
-  echo "Installing Node.js LTS..."
-  nvm install --lts
+  echo "Installing Node.js 20.x...."
+  #nvm install --lts
+  nvm install 20
 fi
 
-# Use Node.js LTS
-nvm use --lts
+# Use Node.js 20
+#nvm use --lts
+nvm use 20
 
 # Check Node.js and npm versions
 node --version
@@ -37,16 +39,13 @@ else
   npm install
 fi
 
-# Check if ilib-lnt is already linked
+# Check if ilib-lint is already linked
 if npm ls -g --depth=0 --parseable | grep -q "ilib-lint"; then
-  echo "ilib-lnt already linked globally. Skipping npm link."
+  echo "ilib-lint already linked globally. Skipping npm link."
 else
-  echo "Linking ilib-lint..."
+  echo "Linking ilib-lint and ilib-lint-webos ..."
   npm link ilib-lint
+  npm link ilib-lint-webos
 fi
-
-# Run linting
-# echo "Running lint..."
-#npm run lint -- ilib-lint-webos
 
 echo "✅ Setup complete!"
