@@ -16,10 +16,9 @@ project-root/
 ```
 
 ## Prerequisites (pre-requisite.sh)
-This script automatically sets up the Node.js environment and prepares the system to run ilib-lint.
+This script automatically sets up the Node.js environment and prepares the system to run ilib-lint.   
 It should be executed once before running the linting process or when setting up a new environment.
 
-Note: Before running the script, make sure to install the project dependencies by running:
 ```bash
 ./pre-requisite.sh
 ```
