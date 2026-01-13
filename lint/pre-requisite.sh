@@ -14,17 +14,10 @@ export NVM_DIR="$HOME/.nvm"
 # shellcheck disable=SC1091
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
-# Check and install Node.js LTS if not installed
-if nvm ls --no-colors | grep -q "lts"; then
-  echo "Node.js LTS already installed. Skipping installation."
-else
-  echo "Installing Node.js 20.x...."
-  #nvm install --lts
-  nvm install 20
-fi
+echo "Installing Node.js 20.x...."
+nvm install 20
 
 # Use Node.js 20
-#nvm use --lts
 nvm use 20
 
 # Check Node.js and npm versions
