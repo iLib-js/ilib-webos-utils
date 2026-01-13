@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en-KR" trgLang="ko-KR" version="2.0">
+ <file id="app2_f1" original="app2">
+  <group id="app2_g1" name="javascript">
+   <unit id="app2_g1_1">
+    <notes>
+      <note>menu name</note>
+    </notes>
+    <segment>
+      <source>{label} Settings</source>
+      <target>{label} 설정</target>
+    </segment>
+   </unit>
+   <unit id="app2_g1_2">
+    <segment>
+     <source>{num} Hz Booster</source>
+     <target>144 Hz 부스터</target>
+    </segment>
+   </unit>
+   <unit id="app2_g1_3">
+    <segment>
+      <source>10 and Above</source>
+      <target>10 이상</target>
+    </segment>
+   </unit>
+   <unit id="app2_g1_4">
+    <segment>
+      <source>Home Settings</source>
+      <target>홈 설정</target>
+    </segment>
+  </unit>
+  </group>
+ </file>
+</xliff>
