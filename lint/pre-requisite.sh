@@ -39,6 +39,7 @@ else
   echo "Linking ilib-lint and ilib-lint-webos ..."
   npm link ilib-lint
   npm link ilib-lint-webos
+  npm link option-parser
 fi
 
 echo "✅ Setup complete!"
