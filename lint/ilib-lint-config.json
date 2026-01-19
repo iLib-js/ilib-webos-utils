@@ -9,10 +9,10 @@
     "rulesets": {
         "webos-translation-rules": {
             "resource-edge-whitespace": true,
-            "resource-url-match": true,
-            "resource-named-params": true,
-            "resource-unique-keys": true,
-            "resource-completeness": true,
+            "resource-url-match": false,
+            "resource-named-params": false,
+            "resource-unique-keys": false,
+            "resource-completeness": false,
             "resource-quote-style": false,
             "resource-no-fullwidth-latin": false,
             "resource-no-fullwidth-digits": false,

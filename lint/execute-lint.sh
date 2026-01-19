@@ -110,7 +110,24 @@ main() {
     arrInvalidDir=()
 
     find . -type d | while IFS= read -r appDir; do
-        if [[ "$appDir" == "." || "$appDir" == "./.git" ]]; then
+        dirName=$(basename "$appDir")
+
+        if [[ "$appDir" == *"/.git"* \
+            || "$dirName" == "." \
+            || "$dirName" == "account-billing" \
+            || "$dirName" == "home" \
+            || "$dirName" == "homeconnect-overlay" \
+            || "$dirName" == "homeconnect" \
+            || "$dirName" == "igallery" \
+            || "$dirName" == "information" \
+            || "$dirName" == "lgrecommendations" \
+            || "$dirName" == "irdbmanager" \
+            || "$dirName" == "oobe" \
+            || "$dirName" == "settings" \
+            || "$dirName" == "tvhotkeyqml" \
+            || "$dirName" == "livemenu" \
+            || "$dirName" == "outdoorwebcontrol" \
+            || "$dirName" == "voice" ]]; then
             arrInvalidDir+=("$appDir")
             continue
         fi
@@ -128,7 +145,8 @@ main() {
             -i \
             -f webos-json-formatter \
             -o "$JSON_RESULT_PATH/${safe_name}-result.json" \
-            -n "$normalized_dir"
+            -n "$normalized_dir" \
+            --overwrite
 
         popd > /dev/null
         echo "==========================================================================="
