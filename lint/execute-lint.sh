@@ -112,7 +112,7 @@ main() {
     find . -type d | while IFS= read -r appDir; do
         dirName=$(basename "$appDir")
 
-        if [[ "$appDir" == *"/.git"* \
+        if [[ "$appDir" == "/.git*" || "$appDir" == "./git/*" \
             || "$dirName" == "." \
             || "$dirName" == "account-billing" \
             || "$dirName" == "home" \
@@ -122,6 +122,8 @@ main() {
             || "$dirName" == "information" \
             || "$dirName" == "lgrecommendations" \
             || "$dirName" == "irdbmanager" \
+            || "$dirName" == "channeledit" \
+            || "$dirName" == "channeledit-lite" \
             || "$dirName" == "oobe" \
             || "$dirName" == "settings" \
             || "$dirName" == "tvhotkeyqml" \
