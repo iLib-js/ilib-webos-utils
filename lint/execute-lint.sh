@@ -6,7 +6,8 @@
 : <<'END'
 ./execute-lint.sh \
   ~/Source/localization-data/ \
-  RESULT
+  output=RESULT \
+  target=app1
 END
 
 # -------------------------------
@@ -15,8 +16,31 @@ END
 SAVEIFS=$IFS
 IFS=$'\n\b'
 
-LOCDATA_PATH=$1
-OUTPUT_PATH=${2:-"tmp"}
+LOCDATA_PATH=""
+OUTPUT_PATH="tmp"
+TARGET_APP=""
+
+# Parse arguments (supports both positional and key=value format)
+for arg in "$@"; do
+    case "$arg" in
+        -h|--help)
+            show_help
+            exit 0
+            ;;
+        output=*|--output=*)
+            OUTPUT_PATH="${arg#*=}"
+            ;;
+        target=*|--target=*)
+            TARGET_APP="${arg#*=}"
+            ;;
+        *)
+            # First non-option argument is LOCDATA_PATH if not set
+            if [ -z "$LOCDATA_PATH" ]; then
+                LOCDATA_PATH="$arg"
+            fi
+            ;;
+    esac
+done
 
 DEFAULT_CONFIG_PATH="$(pwd)/ilib-lint-config.json"
 DEFAULT_LINT_PATH="$(pwd)"
@@ -28,15 +52,24 @@ JSON_RESULT_PATH="$(pwd)/jsonOutput"
 show_help() {
     echo ""
     echo "Usage:"
-    echo "  $(basename "$0") <LOCDATA_PATH> [OUTPUT_PATH]"
+    echo "  $(basename "$0") <LOCDATA_PATH> [output=OUTPUT_PATH] [target=TARGET_APP]"
     echo ""
     echo "Arguments:"
     echo "  LOCDATA_PATH"
     echo "    Path to the source directory to be linted."
     echo ""
-    echo "  OUTPUT_PATH (optional)"
+    echo "  output=OUTPUT_PATH (optional)"
     echo "    Directory where the final HTML report will be generated."
     echo "    Default: ./tmp"
+    echo ""
+    echo "  target=TARGET_APP (optional)"
+    echo "    Specific app directory name to lint."
+    echo "    If provided, only this app will be processed."
+    echo ""
+    echo "Examples:"
+    echo "  $(basename "$0") ~/Source/localization-data/ output=RESULT target=app1"
+    echo "  $(basename "$0") ~/Source/localization-data/ target=app1 output=RESULT"
+    echo "  $(basename "$0") ~/Source/localization-data/ target=app1"
     echo ""
     echo "Options:"
     echo "  -h, --help"
@@ -47,17 +80,16 @@ show_help() {
 # -------------------------------
 # Argument validation
 # -------------------------------
-if [[ "$1" == "-h" || "$1" == "--help" ]]; then
-    show_help
-    exit 0
-fi
-
 if [ -z "$LOCDATA_PATH" ]; then
     echo "Error: LOCDATA_PATH is required."
     show_help
     exit 1
 fi
 echo "📂 Using output directory: $OUTPUT_PATH"
+
+if [ -n "$TARGET_APP" ]; then
+    echo "🎯 Target app specified: $TARGET_APP"
+fi
 # -------------------------------
 # Utility functions
 # -------------------------------
@@ -109,27 +141,22 @@ main() {
     START_TIME=$(date +%s)
     arrInvalidDir=()
 
+# account-billing home homeconnect-overlay homeconnect igallery information lgrecommendations
+# irdbmanager channeledit channeledit-lite oobe settings tvhotkeyqml livemenu outdoorwebcontrol voice
+
+#--overwrite
+#--fix --write
     find . -type d | while IFS= read -r appDir; do
         dirName=$(basename "$appDir")
 
+        # Skip if TARGET_APP is specified and this is not the target
+        if [ -n "$TARGET_APP" ] && [ "$dirName" != "$TARGET_APP" ] && [ "$appDir" != "./$TARGET_APP" ]; then
+            continue
+        fi
+
         if [[ "$appDir" == "/.git*" || "$appDir" == "./git/*" \
             || "$dirName" == "." \
-            || "$dirName" == "account-billing" \
-            || "$dirName" == "home" \
-            || "$dirName" == "homeconnect-overlay" \
-            || "$dirName" == "homeconnect" \
-            || "$dirName" == "igallery" \
-            || "$dirName" == "information" \
-            || "$dirName" == "lgrecommendations" \
-            || "$dirName" == "irdbmanager" \
-            || "$dirName" == "channeledit" \
-            || "$dirName" == "channeledit-lite" \
-            || "$dirName" == "oobe" \
-            || "$dirName" == "settings" \
-            || "$dirName" == "tvhotkeyqml" \
-            || "$dirName" == "livemenu" \
-            || "$dirName" == "outdoorwebcontrol" \
-            || "$dirName" == "voice" ]]; then
+           ]]; then
             arrInvalidDir+=("$appDir")
             continue
         fi
@@ -148,7 +175,7 @@ main() {
             -f webos-json-formatter \
             -o "$JSON_RESULT_PATH/${safe_name}-result.json" \
             -n "$normalized_dir" \
-            --overwrite
+            --fix --write
 
         popd > /dev/null
         echo "==========================================================================="
