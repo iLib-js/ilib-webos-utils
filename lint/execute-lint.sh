@@ -19,6 +19,7 @@ IFS=$'\n\b'
 LOCDATA_PATH=""
 OUTPUT_PATH="tmp"
 TARGET_APP=""
+FIX_MODE="overwrite"
 
 # -------------------------------
 # Help
@@ -26,7 +27,7 @@ TARGET_APP=""
 show_help() {
     echo ""
     echo "Usage:"
-    echo "  $(basename "$0") <LOCDATA_PATH> [output=OUTPUT_PATH] [target=TARGET_APP]"
+    echo "  $(basename "$0") <LOCDATA_PATH> [output=OUTPUT_PATH] [target=TARGET_APP] [fixmode=FIX_MODE]"
     echo ""
     echo "Arguments:"
     echo "  LOCDATA_PATH"
@@ -40,10 +41,16 @@ show_help() {
     echo "    Specific app directory name to lint."
     echo "    If provided, only this app will be processed."
     echo ""
+    echo "  fixmode=FIX_MODE (optional)"
+    echo "    Lint mode: 'overwrite' or 'fix'"
+    echo "    - overwrite: Use --overwrite option (default)"
+    echo "    - fix: Use --fix --write options"
+    echo "    Default: overwrite"
+    echo ""
     echo "Examples:"
     echo "  $(basename "$0") ~/Source/localization-data/ output=RESULT target=app1"
-    echo "  $(basename "$0") ~/Source/localization-data/ target=app1 output=RESULT"
-    echo "  $(basename "$0") ~/Source/localization-data/ target=app1"
+    echo "  $(basename "$0") ~/Source/localization-data/ target=app1 output=RESULT fixmode=fix"
+    echo "  $(basename "$0") ~/Source/localization-data/ target=app1 fixmode=overwrite"
     echo ""
     echo "Options:"
     echo "  -h, --help"
@@ -63,6 +70,9 @@ for arg in "$@"; do
             ;;
         target=*|--target=*)
             TARGET_APP="${arg#*=}"
+            ;;
+        fixmode=*|--fixmode=*)
+            FIX_MODE="${arg#*=}"
             ;;
         *)
             # First non-option argument is LOCDATA_PATH if not set
@@ -89,6 +99,19 @@ echo "📂 Using output directory: $OUTPUT_PATH"
 
 if [ -n "$TARGET_APP" ]; then
     echo "🎯 Target app specified: $TARGET_APP"
+fi
+
+# Validate and set lint options based on fix mode
+if [ "$FIX_MODE" = "fix" ]; then
+    FIX_OPTIONS="--fix --write"
+    echo "🔧 Using lint mode: fix (--fix --write)"
+elif [ "$FIX_MODE" = "overwrite" ]; then
+    FIX_OPTIONS="--overwrite"
+    echo "🔧 Using lint mode: overwrite (--overwrite)"
+else
+    echo "Error: Invalid fix mode '$FIX_MODE'. Use 'overwrite' or 'fix'."
+    show_help
+    exit 1
 fi
 # -------------------------------
 # Utility functions
@@ -141,11 +164,8 @@ main() {
     START_TIME=$(date +%s)
     arrInvalidDir=()
 
-# account-billing home homeconnect-overlay homeconnect igallery information lgrecommendations
-# irdbmanager channeledit channeledit-lite oobe settings tvhotkeyqml livemenu outdoorwebcontrol voice
-
-#--overwrite
-#--fix --write
+    # --overwrite : modify the original file
+    # --fix --write : generate .xliff.modified files with fixes
     find . -type d | while IFS= read -r appDir; do
         dirName=$(basename "$appDir")
 
@@ -175,7 +195,7 @@ main() {
             -f webos-json-formatter \
             -o "$JSON_RESULT_PATH/${safe_name}-result.json" \
             -n "$normalized_dir" \
-            --fix --write
+            $FIX_OPTIONS
 
         popd > /dev/null
         echo "==========================================================================="
