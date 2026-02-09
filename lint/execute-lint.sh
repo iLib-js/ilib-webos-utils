@@ -20,32 +20,6 @@ LOCDATA_PATH=""
 OUTPUT_PATH="tmp"
 TARGET_APP=""
 
-# Parse arguments (supports both positional and key=value format)
-for arg in "$@"; do
-    case "$arg" in
-        -h|--help)
-            show_help
-            exit 0
-            ;;
-        output=*|--output=*)
-            OUTPUT_PATH="${arg#*=}"
-            ;;
-        target=*|--target=*)
-            TARGET_APP="${arg#*=}"
-            ;;
-        *)
-            # First non-option argument is LOCDATA_PATH if not set
-            if [ -z "$LOCDATA_PATH" ]; then
-                LOCDATA_PATH="$arg"
-            fi
-            ;;
-    esac
-done
-
-DEFAULT_CONFIG_PATH="$(pwd)/ilib-lint-config.json"
-DEFAULT_LINT_PATH="$(pwd)"
-JSON_RESULT_PATH="$(pwd)/jsonOutput"
-
 # -------------------------------
 # Help
 # -------------------------------
@@ -76,6 +50,32 @@ show_help() {
     echo "    Show this help message and exit."
     echo ""
 }
+
+# Parse arguments (supports both positional and key=value format)
+for arg in "$@"; do
+    case "$arg" in
+        -h|--help)
+            show_help
+            exit 0
+            ;;
+        output=*|--output=*)
+            OUTPUT_PATH="${arg#*=}"
+            ;;
+        target=*|--target=*)
+            TARGET_APP="${arg#*=}"
+            ;;
+        *)
+            # First non-option argument is LOCDATA_PATH if not set
+            if [ -z "$LOCDATA_PATH" ]; then
+                LOCDATA_PATH="$arg"
+            fi
+            ;;
+    esac
+done
+
+DEFAULT_CONFIG_PATH="$(pwd)/ilib-lint-config.json"
+DEFAULT_LINT_PATH="$(pwd)"
+JSON_RESULT_PATH="$(pwd)/jsonOutput"
 
 # -------------------------------
 # Argument validation
