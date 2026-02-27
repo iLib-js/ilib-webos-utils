@@ -103,10 +103,10 @@ fi
 
 # Validate and set lint options based on fix mode
 if [ "$FIX_MODE" = "fix" ]; then
-    FIX_OPTIONS="--fix --write"
+    FIX_OPTIONS=(--fix --write)
     echo "🔧 Using lint mode: fix (--fix --write)"
 elif [ "$FIX_MODE" = "overwrite" ]; then
-    FIX_OPTIONS="--overwrite"
+    FIX_OPTIONS=(--overwrite)
     echo "🔧 Using lint mode: overwrite (--overwrite)"
 else
     echo "Error: Invalid fix mode '$FIX_MODE'. Use 'overwrite' or 'fix'."
@@ -166,7 +166,7 @@ main() {
 
     # --overwrite : modify the original file
     # --fix --write : generate .xliff.modified files with fixes
-    find . -type d | while IFS= read -r appDir; do
+    while IFS= read -r appDir; do
         dirName=$(basename "$appDir")
 
         # Skip if TARGET_APP is specified and this is not the target
@@ -176,7 +176,27 @@ main() {
 
         if [[ "$appDir" == "/.git*" || "$appDir" == "./git/*" \
             || "$dirName" == "." \
-           ]]; then
+            || "$dirName" == "home" \
+            || "$dirName" == "idbscreensaver" \
+            || "$dirName" == "levelertool" \
+            || "$dirName" == "contentmanager" \
+            || "$dirName" == "multiscreen" \
+            || "$dirName" == "mvpdwin" \
+            || "$dirName" == "nms" \
+            || "$dirName" == "proserversetting" \
+            || "$dirName" == "presenterhost" \
+            || "$dirName" == "sensor-device-manager" \
+            || "$dirName" == "serversettings" \
+            || "$dirName" == "signage-luna-surface-manager" \
+            || "$dirName" == "signagecloning" \
+            || "$dirName" == "signageinfo" \
+            || "$dirName" == "softwareupdate-idb" \
+            || "$dirName" == "tvservice-arib" \
+            || "$dirName" == "tvservice-atsc" \
+            || "$dirName" == "tvservice-dvb" \
+            || "$dirName" == "tvservice" \
+            || "$dirName" == "webospartners" \
+            || "$dirName" == "siappsetting" ]]; then
             arrInvalidDir+=("$appDir")
             continue
         fi
@@ -195,11 +215,11 @@ main() {
             -f webos-json-formatter \
             -o "$JSON_RESULT_PATH/${safe_name}-result.json" \
             -n "$normalized_dir" \
-            $FIX_OPTIONS
+            "${FIX_OPTIONS[@]}"
 
         popd > /dev/null
         echo "==========================================================================="
-    done
+    done < <(find . -type d)
 
     popd > /dev/null
 
