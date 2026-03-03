@@ -19,7 +19,7 @@ IFS=$'\n\b'
 LOCDATA_PATH=""
 OUTPUT_PATH="tmp"
 TARGET_APP=""
-FIX_MODE="overwrite"
+FIX_MODE=""
 
 # -------------------------------
 # Help
@@ -43,9 +43,9 @@ show_help() {
     echo ""
     echo "  fixmode=FIX_MODE (optional)"
     echo "    Lint mode: 'overwrite' or 'fix'"
-    echo "    - overwrite: Use --overwrite option (default)"
+    echo "    - overwrite: Use --overwrite option"
     echo "    - fix: Use --fix --write options"
-    echo "    Default: overwrite"
+    echo "    If not provided, no fix mode option will be passed."
     echo ""
     echo "Examples:"
     echo "  $(basename "$0") ~/Source/localization-data/ output=RESULT target=app1"
@@ -102,16 +102,21 @@ if [ -n "$TARGET_APP" ]; then
 fi
 
 # Validate and set lint options based on fix mode
-if [ "$FIX_MODE" = "fix" ]; then
-    FIX_OPTIONS=(--fix --write)
-    echo "🔧 Using lint mode: fix (--fix --write)"
-elif [ "$FIX_MODE" = "overwrite" ]; then
-    FIX_OPTIONS=(--overwrite)
-    echo "🔧 Using lint mode: overwrite (--overwrite)"
+if [ -n "$FIX_MODE" ]; then
+    if [ "$FIX_MODE" = "fix" ]; then
+        FIX_OPTIONS=(--fix --write)
+        echo "🔧 Using lint mode: fix (--fix --write)"
+    elif [ "$FIX_MODE" = "overwrite" ]; then
+        FIX_OPTIONS=(--overwrite)
+        echo "🔧 Using lint mode: overwrite (--overwrite)"
+    else
+        echo "Error: Invalid fix mode '$FIX_MODE'. Use 'overwrite' or 'fix'."
+        show_help
+        exit 1
+    fi
 else
-    echo "Error: Invalid fix mode '$FIX_MODE'. Use 'overwrite' or 'fix'."
-    show_help
-    exit 1
+    FIX_OPTIONS=()
+    echo "🔧 No lint fix mode option will be passed."
 fi
 # -------------------------------
 # Utility functions
@@ -163,6 +168,30 @@ main() {
     appCnt=0
     START_TIME=$(date +%s)
     arrInvalidDir=()
+    EXCLUDED_DIRS=(
+        .
+        home
+        idbscreensaver
+        levelertool
+        contentmanager
+        multiscreen
+        mvpdwin
+        nms
+        proserversetting
+        presenterhost
+        sensor-device-manager
+        serversettings
+        signage-luna-surface-manager
+        signagecloning
+        signageinfo
+        softwareupdate-idb
+        tvservice-arib
+        tvservice-atsc
+        tvservice-dvb
+        tvservice
+        webospartners
+        siappsetting
+    )
 
     # --overwrite : modify the original file
     # --fix --write : generate .xliff.modified files with fixes
@@ -174,32 +203,17 @@ main() {
             continue
         fi
 
-        if [[ "$appDir" == "/.git*" || "$appDir" == "./git/*" \
-            || "$dirName" == "." \
-            || "$dirName" == "home" \
-            || "$dirName" == "idbscreensaver" \
-            || "$dirName" == "levelertool" \
-            || "$dirName" == "contentmanager" \
-            || "$dirName" == "multiscreen" \
-            || "$dirName" == "mvpdwin" \
-            || "$dirName" == "nms" \
-            || "$dirName" == "proserversetting" \
-            || "$dirName" == "presenterhost" \
-            || "$dirName" == "sensor-device-manager" \
-            || "$dirName" == "serversettings" \
-            || "$dirName" == "signage-luna-surface-manager" \
-            || "$dirName" == "signagecloning" \
-            || "$dirName" == "signageinfo" \
-            || "$dirName" == "softwareupdate-idb" \
-            || "$dirName" == "tvservice-arib" \
-            || "$dirName" == "tvservice-atsc" \
-            || "$dirName" == "tvservice-dvb" \
-            || "$dirName" == "tvservice" \
-            || "$dirName" == "webospartners" \
-            || "$dirName" == "siappsetting" ]]; then
+        if [[ "$appDir" == "/.git*" || "$appDir" == "./git/*" ]]; then
             arrInvalidDir+=("$appDir")
             continue
         fi
+
+        for excluded in "${EXCLUDED_DIRS[@]}"; do
+            if [ "$dirName" == "$excluded" ]; then
+                arrInvalidDir+=("$appDir")
+                continue 2
+            fi
+        done
 
         pushd "$appDir" > /dev/null || continue
 
@@ -209,13 +223,16 @@ main() {
 
         echo "<<< ($appCnt) $normalized_dir >>>"
 
-        npx ilib-lint \
+        lint_cmd=(npx ilib-lint \
             -c "$DEFAULT_CONFIG_PATH" \
             -i \
             -f webos-json-formatter \
             -o "$JSON_RESULT_PATH/${safe_name}-result.json" \
-            -n "$normalized_dir" \
-            "${FIX_OPTIONS[@]}"
+            -n "$normalized_dir")
+        if [ -n "$FIX_MODE" ]; then
+            lint_cmd+=("${FIX_OPTIONS[@]}")
+        fi
+        "${lint_cmd[@]}"
 
         popd > /dev/null
         echo "==========================================================================="
