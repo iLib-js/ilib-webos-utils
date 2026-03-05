@@ -6,7 +6,8 @@
 : <<'END'
 ./execute-lint.sh \
   ~/Source/localization-data/ \
-  RESULT
+  output=RESULT \
+  target=app1
 END
 
 # -------------------------------
@@ -15,12 +16,10 @@ END
 SAVEIFS=$IFS
 IFS=$'\n\b'
 
-LOCDATA_PATH=$1
-OUTPUT_PATH=${2:-"tmp"}
-
-DEFAULT_CONFIG_PATH="$(pwd)/ilib-lint-config.json"
-DEFAULT_LINT_PATH="$(pwd)"
-JSON_RESULT_PATH="$(pwd)/jsonOutput"
+LOCDATA_PATH=""
+OUTPUT_PATH="tmp"
+TARGET_APP=""
+FIX_MODE=""
 
 # -------------------------------
 # Help
@@ -28,15 +27,30 @@ JSON_RESULT_PATH="$(pwd)/jsonOutput"
 show_help() {
     echo ""
     echo "Usage:"
-    echo "  $(basename "$0") <LOCDATA_PATH> [OUTPUT_PATH]"
+    echo "  $(basename "$0") <LOCDATA_PATH> [output=OUTPUT_PATH] [target=TARGET_APP] [fixmode=FIX_MODE]"
     echo ""
     echo "Arguments:"
     echo "  LOCDATA_PATH"
     echo "    Path to the source directory to be linted."
     echo ""
-    echo "  OUTPUT_PATH (optional)"
+    echo "  output=OUTPUT_PATH (optional)"
     echo "    Directory where the final HTML report will be generated."
     echo "    Default: ./tmp"
+    echo ""
+    echo "  target=TARGET_APP (optional)"
+    echo "    Specific app directory name to lint."
+    echo "    If provided, only this app will be processed."
+    echo ""
+    echo "  fixmode=FIX_MODE (optional)"
+    echo "    Lint mode: 'overwrite' or 'fix'"
+    echo "    - overwrite: Use --overwrite option"
+    echo "    - fix: Use --fix --write options"
+    echo "    If not provided, no fix mode option will be passed."
+    echo ""
+    echo "Examples:"
+    echo "  $(basename "$0") ~/Source/localization-data/ output=RESULT target=app1"
+    echo "  $(basename "$0") ~/Source/localization-data/ target=app1 output=RESULT fixmode=fix"
+    echo "  $(basename "$0") ~/Source/localization-data/ target=app1 fixmode=overwrite"
     echo ""
     echo "Options:"
     echo "  -h, --help"
@@ -44,20 +58,66 @@ show_help() {
     echo ""
 }
 
+# Parse arguments (supports both positional and key=value format)
+for arg in "$@"; do
+    case "$arg" in
+        -h|--help)
+            show_help
+            exit 0
+            ;;
+        output=*|--output=*)
+            OUTPUT_PATH="${arg#*=}"
+            ;;
+        target=*|--target=*)
+            TARGET_APP="${arg#*=}"
+            ;;
+        fixmode=*|--fixmode=*)
+            FIX_MODE="${arg#*=}"
+            ;;
+        *)
+            # First non-option argument is LOCDATA_PATH if not set
+            if [ -z "$LOCDATA_PATH" ]; then
+                LOCDATA_PATH="$arg"
+            fi
+            ;;
+    esac
+done
+
+DEFAULT_CONFIG_PATH="$(pwd)/ilib-lint-config.json"
+DEFAULT_LINT_PATH="$(pwd)"
+JSON_RESULT_PATH="$(pwd)/jsonOutput"
+
 # -------------------------------
 # Argument validation
 # -------------------------------
-if [[ "$1" == "-h" || "$1" == "--help" ]]; then
-    show_help
-    exit 0
-fi
-
 if [ -z "$LOCDATA_PATH" ]; then
     echo "Error: LOCDATA_PATH is required."
     show_help
     exit 1
 fi
 echo "📂 Using output directory: $OUTPUT_PATH"
+
+if [ -n "$TARGET_APP" ]; then
+    echo "🎯 Target app specified: $TARGET_APP"
+fi
+
+# Validate and set lint options based on fix mode
+if [ -n "$FIX_MODE" ]; then
+    if [ "$FIX_MODE" = "fix" ]; then
+        FIX_OPTIONS=(--fix --write)
+        echo "🔧 Using lint mode: fix (--fix --write)"
+    elif [ "$FIX_MODE" = "overwrite" ]; then
+        FIX_OPTIONS=(--overwrite)
+        echo "🔧 Using lint mode: overwrite (--overwrite)"
+    else
+        echo "Error: Invalid fix mode '$FIX_MODE'. Use 'overwrite' or 'fix'."
+        show_help
+        exit 1
+    fi
+else
+    FIX_OPTIONS=()
+    echo "🔧 No lint fix mode option will be passed."
+fi
 # -------------------------------
 # Utility functions
 # -------------------------------
@@ -108,12 +168,52 @@ main() {
     appCnt=0
     START_TIME=$(date +%s)
     arrInvalidDir=()
+    EXCLUDED_DIRS=(
+        .
+        home
+        idbscreensaver
+        levelertool
+        contentmanager
+        multiscreen
+        mvpdwin
+        nms
+        proserversetting
+        presenterhost
+        sensor-device-manager
+        serversettings
+        signage-luna-surface-manager
+        signagecloning
+        signageinfo
+        softwareupdate-idb
+        tvservice-arib
+        tvservice-atsc
+        tvservice-dvb
+        tvservice
+        webospartners
+        siappsetting
+    )
 
-    find . -type d | while IFS= read -r appDir; do
-        if [[ "$appDir" == "." || "$appDir" == "./.git" ]]; then
+    # --overwrite : modify the original file
+    # --fix --write : generate .xliff.modified files with fixes
+    while IFS= read -r appDir; do
+        dirName=$(basename "$appDir")
+
+        # Skip if TARGET_APP is specified and this is not the target
+        if [ -n "$TARGET_APP" ] && [ "$dirName" != "$TARGET_APP" ] && [ "$appDir" != "./$TARGET_APP" ]; then
+            continue
+        fi
+
+        if [[ "$appDir" == "/.git*" || "$appDir" == "./git/*" ]]; then
             arrInvalidDir+=("$appDir")
             continue
         fi
+
+        for excluded in "${EXCLUDED_DIRS[@]}"; do
+            if [ "$dirName" == "$excluded" ]; then
+                arrInvalidDir+=("$appDir")
+                continue 2
+            fi
+        done
 
         pushd "$appDir" > /dev/null || continue
 
@@ -123,16 +223,20 @@ main() {
 
         echo "<<< ($appCnt) $normalized_dir >>>"
 
-        npx ilib-lint \
+        lint_cmd=(npx ilib-lint \
             -c "$DEFAULT_CONFIG_PATH" \
             -i \
             -f webos-json-formatter \
             -o "$JSON_RESULT_PATH/${safe_name}-result.json" \
-            -n "$normalized_dir"
+            -n "$normalized_dir")
+        if [ -n "$FIX_MODE" ]; then
+            lint_cmd+=("${FIX_OPTIONS[@]}")
+        fi
+        "${lint_cmd[@]}"
 
         popd > /dev/null
         echo "==========================================================================="
-    done
+    done < <(find . -type d)
 
     popd > /dev/null
 
