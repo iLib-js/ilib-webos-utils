@@ -170,32 +170,12 @@ main() {
     arrInvalidDir=()
     EXCLUDED_DIRS=(
         .
-        home
-        idbscreensaver
-        levelertool
-        contentmanager
-        multiscreen
-        mvpdwin
-        nms
-        proserversetting
-        presenterhost
-        sensor-device-manager
-        serversettings
-        signage-luna-surface-manager
-        signagecloning
-        signageinfo
-        softwareupdate-idb
-        tvservice-arib
-        tvservice-atsc
-        tvservice-dvb
-        tvservice
-        webospartners
-        siappsetting
     )
 
     # --overwrite : modify the original file
     # --fix --write : generate .xliff.modified files with fixes
-    while IFS= read -r appDir; do
+    for appDir in */; do
+        appDir="${appDir%/}"  # Remove trailing slash
         dirName=$(basename "$appDir")
 
         # Skip if TARGET_APP is specified and this is not the target
@@ -236,7 +216,7 @@ main() {
 
         popd > /dev/null
         echo "==========================================================================="
-    done < <(find . -type d)
+    done
 
     popd > /dev/null
 
