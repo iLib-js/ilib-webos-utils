@@ -62,6 +62,10 @@ const optionConfig = {
         flag: true,
         default: false,
         help: 'Only return errors and suppress warnings'
+    },
+    version: {
+        varName: 'version label',
+        help: 'Submission label displayed at the top of the HTML report'
     }
 };
 
@@ -69,6 +73,7 @@ const optionConfig = {
 const options = OptionsParser.parse(optionConfig).opt;
 const errorsOnly = options.errorsOnly ?? false;
 const outDir = options.outputDirectory || DEFAULT_OUTPUT_DIR;
+const version = options.version || '';
 
 let totalSummary = [];
 
@@ -166,9 +171,9 @@ function buildTotalSummaryTable(data) {
             const desc = entry ? escapeHtml(entry.text ?? entry) : '';
             return `
     <tr>
-      <td>${ruleName}</td>
-      <td>${cnt}</td>
-      <td>${desc}</td>
+      <td class="col-rule">${ruleName}</td>
+      <td class="col-count">${cnt}</td>
+      <td class="col-desc">${desc}</td>
     </tr>`;
         }).join('');
 
@@ -191,12 +196,7 @@ function buildTotalSummaryTable(data) {
         </tr>`;
     }).join('');
 
-    return `
-<body>
-<div class="page-header">
-  <h1>Summary of all app results</h1>
-</div>
-<div class="page-wrapper">
+    return buildPageHeader('Summary of all app results') + `
   <div class="stat-cards">
     <div class="stat-card errors">
       <div class="stat-label">Total Errors</div>
@@ -214,7 +214,7 @@ function buildTotalSummaryTable(data) {
   <div class="card">
     <h2>Issues by Rule</h2>
     <table>
-      <thead><tr><th>Rule</th><th>Count</th><th>Description</th></tr></thead>
+      <thead><tr><th class="col-rule">Rule</th><th class="col-count">Count</th><th class="col-desc">Description</th></tr></thead>
       <tbody>${ruleTotalRows}</tbody>
     </table>
   </div>
@@ -227,6 +227,18 @@ function buildTotalSummaryTable(data) {
   </div>`;
 }
 
+
+function buildPageHeader(title) {
+    const sub = version
+        ? `<p class="version-label">${escapeHtml(version)}</p>`
+        : '';
+    return `
+<body>
+<div class="page-header">
+  <h1>${escapeHtml(title)}</h1>${sub}
+</div>
+<div class="page-wrapper">`;
+}
 
 function buildRuleInfo(details) {
     if (!details) return '';
@@ -304,14 +316,8 @@ function getSummary(summary) {
     ];
     const [errFile, errMod, errLine] = ratio(summary.resultStats.errors);
     const [warnFile, warnMod, warnLine] = ratio(summary.resultStats.warnings);
-    const [sgFile, sgMod, sgLine] = ratio(summary.resultStats.suggestions);
 
-    return `
-<body>
-<div class="page-header">
-  <h1>[${escapeHtml(summary.projectName)}] Summary</h1>
-</div>
-<div class="page-wrapper">
+    return buildPageHeader(`[${summary.projectName}] Summary`) + `
   <div class="stat-cards">
     <div class="stat-card errors">
       <div class="stat-label">Errors</div>
@@ -320,10 +326,6 @@ function getSummary(summary) {
     <div class="stat-card warnings">
       <div class="stat-label">Warnings</div>
       <div class="stat-value">${summary.resultStats.warnings}</div>
-    </div>
-    <div class="stat-card suggestions">
-      <div class="stat-label">Suggestions</div>
-      <div class="stat-value">${summary.resultStats.suggestions}</div>
     </div>
   </div>
   <div class="card">
@@ -338,7 +340,7 @@ function getSummary(summary) {
       <tbody>
         <tr><td class="highlight">Errors</td><td class="red">${summary.resultStats.errors}</td><td>${errFile}</td><td>${errMod}</td><td>${errLine}</td></tr>
         <tr><td class="highlight">Warnings</td><td class="orange">${summary.resultStats.warnings}</td><td>${warnFile}</td><td>${warnMod}</td><td>${warnLine}</td></tr>
-        <tr><td class="highlight">Suggestions</td><td>${summary.resultStats.suggestions}</td><td>${sgFile}</td><td>${sgMod}</td><td>${sgLine}</td></tr>
+
       </tbody>
     </table>
   </div>`;
@@ -394,7 +396,7 @@ function getRules(rules) {
 <div class="card">
   <h2>Rules</h2>
   <button id="select-all">Select All</button><button id="unselect-all" class="secondary">Deselect All</button>
-  <table><tbody>${rows}</tbody></table>
+  <table class="compact"><tbody>${rows}</tbody></table>
 </div>`;
 }
 

@@ -13,6 +13,14 @@ body {
   background: linear-gradient(135deg, #3730c8 0%, #6b5fff 100%);
   padding: 24px 40px;
   margin-bottom: 0;
+  text-align: center;
+}
+
+.version-label {
+  color: rgba(255,255,255,0.85);
+  font-size: 13px;
+  margin: 6px 0 0;
+  letter-spacing: 0.3px;
 }
 
 .page-header h1 {
@@ -88,8 +96,7 @@ body {
 .stat-card.total .stat-value       { color: #3730c8; }
 .stat-card.score         { border-left-color: #2e8b57; }
 .stat-card.score .stat-value       { color: #2e8b57; }
-.stat-card.suggestions   { border-left-color: #805ad5; }
-.stat-card.suggestions .stat-value { color: #805ad5; }
+
 
 /* ============ Tables ============ */
 table {
@@ -116,6 +123,10 @@ th {
 
 tr:hover td { background-color: #f7fafc; }
 tbody tr:last-child td { border-bottom: none; }
+table.compact td { padding: 4px 14px; font-size: 13px; }
+.col-rule { width: 25%; }
+.col-count { width: 8%; }
+.col-desc  { width: 67%; font-size: 13px; }
 
 /* ============ Typography ============ */
 h1, h2 { font-weight: 700; margin-top: 0; }
@@ -141,7 +152,7 @@ label {
   font-size: 14px;
   color: #4a5568;
   cursor: pointer;
-  margin-bottom: 14px;
+  margin-bottom: 5px;
 }
 
 /* ============ HR ============ */

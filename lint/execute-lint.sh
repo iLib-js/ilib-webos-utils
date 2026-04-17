@@ -7,7 +7,8 @@
 ./execute-lint.sh \
   ~/Source/localization-data/ \
   output=RESULT \
-  target=app1
+  target=app1 \
+  version="Sprint 42 - 2026-04-17"
 END
 
 # -------------------------------
@@ -20,6 +21,7 @@ LOCDATA_PATH=""
 OUTPUT_PATH="tmp"
 TARGET_APP=""
 FIX_MODE=""
+VERSION=""
 
 # -------------------------------
 # Help
@@ -47,6 +49,10 @@ show_help() {
     echo "    - fix: Use --fix --write options"
     echo "    If not provided, no fix mode option will be passed."
     echo ""
+    echo "  version=VERSION (optional)"
+    echo "    Submission label displayed at the top of the HTML report."
+    echo "    e.g. version=\"Sprint 42 - 2026-04-17\""
+    echo ""
     echo "Examples:"
     echo "  $(basename "$0") ~/Source/localization-data/ output=RESULT target=app1"
     echo "  $(basename "$0") ~/Source/localization-data/ target=app1 output=RESULT fixmode=fix"
@@ -73,6 +79,9 @@ for arg in "$@"; do
             ;;
         fixmode=*|--fixmode=*)
             FIX_MODE="${arg#*=}"
+            ;;
+        version=*|--version=*)
+            VERSION="${arg#*=}"
             ;;
         *)
             # First non-option argument is LOCDATA_PATH if not set
@@ -230,7 +239,9 @@ main() {
 
     echo ""
     echo "------------- Converting JSON results to HTML -------------"
-    node convertHtml/convertHtml.js -d "$JSON_RESULT_PATH" -o "$OUTPUT_PATH"
+    CONVERT_CMD=(node convertHtml/convertHtml.js -d "$JSON_RESULT_PATH" -o "$OUTPUT_PATH")
+    [ -n "$VERSION" ] && CONVERT_CMD+=(--version "$VERSION")
+    "${CONVERT_CMD[@]}"
 
     echo "✅ Final HTML results created at: [[ $OUTPUT_PATH ]]"
 
