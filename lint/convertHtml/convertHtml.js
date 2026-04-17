@@ -138,7 +138,7 @@ function walkDirectory(dir) {
 function writeTotalSummaryResult(sumJsonData) {
     const sorted = [...sumJsonData].sort((a, b) => a.name.localeCompare(b.name));
     const html = [
-        getHeader("Summary of all app results"),
+        getHeader("Summary of All App Results"),
         getHtmlStyle(),
         getScript("case-filter.js"),
         buildTotalSummaryTable(sorted),
@@ -197,7 +197,7 @@ function buildTotalSummaryTable(data) {
         </tr>`;
     }).join('');
 
-    return buildPageHeader('Summary of all app results') + `
+    return buildPageHeader('Summary of All App Results') + `
   <div class="stat-cards">
     <div class="stat-card errors">
       <div class="stat-label">Total Errors</div>
