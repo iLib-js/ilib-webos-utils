@@ -153,6 +153,7 @@ function buildTotalSummaryTable(data) {
     let count = 0;
     const totalErrors = data.reduce((sum, item) => sum + item.errors, 0);
     const totalWarnings = data.reduce((sum, item) => sum + item.warnings, 0);
+    const appsWithIssues = data.filter(item => item.errors > 0 || item.warnings > 0).length;
 
     const ruleTotal = data.reduce((acc, item) => {
         if (!item.details) return acc;
@@ -209,6 +210,10 @@ function buildTotalSummaryTable(data) {
     <div class="stat-card total">
       <div class="stat-label">Total Issues</div>
       <div class="stat-value">${totalErrors + totalWarnings}</div>
+    </div>
+    <div class="stat-card apps-with-issues">
+      <div class="stat-label">Apps with Issues</div>
+      <div class="stat-value">${appsWithIssues} <span class="stat-total">/ ${data.length}</span></div>
     </div>
   </div>
   <div class="card">

@@ -94,8 +94,11 @@ body {
 .stat-card.warnings .stat-value    { color: #dd6b20; }
 .stat-card.total         { border-left-color: #3730c8; }
 .stat-card.total .stat-value       { color: #3730c8; }
-.stat-card.score         { border-left-color: #2e8b57; }
-.stat-card.score .stat-value       { color: #2e8b57; }
+.stat-card.score              { border-left-color: #2e8b57; }
+.stat-card.score .stat-value  { color: #2e8b57; }
+.stat-card.apps-with-issues              { border-left-color: #718096; }
+.stat-card.apps-with-issues .stat-value  { color: #2d3748; }
+.stat-total { font-size: 18px; font-weight: 400; color: #a0aec0; }
 
 
 /* ============ Tables ============ */
