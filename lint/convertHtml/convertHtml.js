@@ -224,7 +224,7 @@ function buildTotalSummaryTable(data) {
     </table>
   </div>
   <div class="card">
-    <label><input type="checkbox" id="toggleNoIssues"> Show only cases with errors/warnings</label>
+    <label><input type="checkbox" id="toggleNoIssues"> Show only apps with errors or warnings</label>
     <table>
       <thead><tr><th>#</th><th>Name</th><th>Errors</th><th>Warnings</th><th>Details</th></tr></thead>
       <tbody>${rows}</tbody>
