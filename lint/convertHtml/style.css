@@ -185,3 +185,29 @@ button.secondary { background-color: #edf2f7; color: #4a5568; }
 button.secondary:hover { background-color: #e2e8f0; }
 
 input.rule-check { margin-right: 8px; vertical-align: middle; }
+
+/* ============ Detail Cards ============ */
+#detail-section.card { padding: 24px 28px 12px; }
+
+.detail-card {
+  border: 1px solid #edf2f7;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+
+.detail-header {
+  padding: 7px 14px;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.detail-header.severity-error   { background-color: #e53e3e; color: white; }
+.detail-header.severity-warning { background-color: #dd6b20; color: white; }
+
+.detail-table { margin: 0; }
+.detail-table td { padding: 6px 14px; font-size: 13px; border-bottom: 1px solid #f0f4f8; }
+.detail-table tbody tr:last-child td { border-bottom: none; }
+.detail-key { font-weight: 600; color: #718096; width: 110px; white-space: nowrap; font-size: 12px; }

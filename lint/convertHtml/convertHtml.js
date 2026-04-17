@@ -363,32 +363,35 @@ function getDetailResults(details, onlyErrors) {
 }
 
 function formatDetailResult(res) {
-    const color =
-        res.severity === 'error'
-            ? 'color:white;background-color:#e53e3e;'
-            : 'color:white;background-color:#dd6b20;';
+    const severityClass = res.severity === 'error' ? 'severity-error' : 'severity-warning';
 
     const targetHighlighted = (res.highlight || '')
-        .replace(/<e\d>/g, '<span style="color:red">')
+        .replace(/<e\d>/g, '<span style="color:#e53e3e;font-weight:700;">')
         .replace(/<\/e\d>/g, '</span>');
+
+    const ruleEntry = RULE_DESCRIPTIONS[res.ruleName];
+    const ruleCell = ruleEntry?.link
+        ? `<a href="${escapeHtml(ruleEntry.link)}" target="_blank">${escapeHtml(res.ruleName)}</a>`
+        : escapeHtml(res.ruleName);
 
     const autofix = res?.fix?.applied || 'unavailable';
 
     return `
-<table>
-<thead><tr><th colspan="2" style="${color}">${escapeHtml(res.severity.toUpperCase())}</th></tr></thead>
-<tbody>
-  <tr><td>filepath</td><td>${escapeHtml(res.path)}</td></tr>
-  <tr><td>Description</td><td>${escapeHtml(res.description)}</td></tr>
-  <tr><td>key</td><td>${escapeHtml(res.key)}</td></tr>
-  <tr><td>source</td><td>${escapeHtml(res.source)}</td></tr>
-  <tr><td>target</td><td>${targetHighlighted}</td></tr>
-  <tr><td>rule</td><td>${escapeHtml(res.ruleName)}</td></tr>
-  <tr><td>rule Description</td><td>${escapeHtml(res.description)}</td></tr>
-  <tr><td>More info</td><td><a href="${escapeHtml(res.link)}">${escapeHtml(res.link)}</a></td></tr>
-  <tr><td>Auto-fix</td><td>${escapeHtml(autofix)}</td></tr>
-</tbody>
-</table>`;
+<div class="detail-card" data-rule="${escapeHtml(res.ruleName)}">
+  <div class="detail-header ${severityClass}">${res.severity.toUpperCase()}</div>
+  <table class="detail-table">
+  <tbody>
+    <tr><td class="detail-key">Rule</td><td>${ruleCell}</td></tr>
+    <tr><td class="detail-key">File</td><td>${escapeHtml(res.path)}</td></tr>
+    <tr><td class="detail-key">Key</td><td>${escapeHtml(res.key)}</td></tr>
+    <tr><td class="detail-key">Source</td><td>${escapeHtml(res.source)}</td></tr>
+    <tr><td class="detail-key">Target</td><td>${targetHighlighted}</td></tr>
+    <tr><td class="detail-key">Description</td><td>${escapeHtml(res.description)}</td></tr>
+    <tr><td class="detail-key">More info</td><td><a href="${escapeHtml(res.link)}" target="_blank">${escapeHtml(res.link)}</a></td></tr>
+    <tr><td class="detail-key">Auto-fix</td><td>${escapeHtml(autofix)}</td></tr>
+  </tbody>
+  </table>
+</div>`;
 }
 
 function getRules(rules) {

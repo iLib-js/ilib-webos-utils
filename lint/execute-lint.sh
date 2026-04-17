@@ -29,7 +29,7 @@ VERSION=""
 show_help() {
     echo ""
     echo "Usage:"
-    echo "  $(basename "$0") <LOCDATA_PATH> [output=OUTPUT_PATH] [target=TARGET_APP] [fixmode=FIX_MODE]"
+    echo "  $(basename "$0") <LOCDATA_PATH> [output=OUTPUT_PATH] [target=TARGET_APP] [fixmode=FIX_MODE] [version=submission/996]"
     echo ""
     echo "Arguments:"
     echo "  LOCDATA_PATH"
