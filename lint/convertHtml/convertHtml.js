@@ -25,7 +25,9 @@ import OptionsParser from 'options-parser';
 
 // Constants
 const DEFAULT_OUTPUT_DIR = './';
-const TOTAL_RESULT_FILENAME = '0.total-result.html';
+//const TOTAL_RESULT_FILENAME = '0.total-result.html';
+const TOTAL_RESULT_FILENAME = 'index.html';
+const APP_RESULTS_SUBDIR = 'apps';
 
 // Rule descriptions — add or update entries here manually
 const RULE_DESCRIPTIONS = {
@@ -183,7 +185,7 @@ function buildTotalSummaryTable(data) {
         const nameColumn =
             item.errors === 0 && item.warnings === 0
                 ? escapeHtml(item.name)
-                : `<a href="./${escapeHtml(item.name)}-result.html">${escapeHtml(item.name)}</a>`;
+                : `<a href="./${APP_RESULTS_SUBDIR}/${escapeHtml(item.name)}-result.html">${escapeHtml(item.name)}</a>`;
 
         const rowClass = (item.errors === 0 && item.warnings === 0) ? 'no-issues' : '';
 
@@ -299,7 +301,7 @@ function generateHtmlOutput(json, summaryInfo) {
     const resultFile = options.outputFileName ||
         `${json.summary.projectName}-result.html`;
 
-    const finalPath = path.join(outDir, resultFile);
+    const finalPath = path.join(outDir, APP_RESULTS_SUBDIR, resultFile);
     const dirPath = path.dirname(finalPath);
 
     if (!fs.existsSync(dirPath)) {

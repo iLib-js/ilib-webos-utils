@@ -32,7 +32,7 @@ This installs all required Node.js packages including `ilib-lint`.
 ## Usage
 
 ```bash
-./execute-lint.sh <LOCDATA_PATH> [output=OUTPUT_PATH] [target=TARGET_APP] [fixmode=FIX_MODE] [version=VERSION]
+./execute-lint.sh <LOCDATA_PATH> [output=OUTPUT_PATH] [target=TARGET_APP] [fixmode=FIX_MODE] [version=VERSION] [jobs=N]
 ```
 
 ### Arguments
@@ -44,6 +44,7 @@ This installs all required Node.js packages including `ilib-lint`.
 | `target=APP`       | No       | —       | Lint only the specified app directory. If omitted, all subdirectories are processed. |
 | `fixmode=MODE`     | No       | —       | `overwrite`: apply fixes in-place (`--overwrite`). `fix`: write fix files (`--fix --write`). |
 | `version=LABEL`    | No       | —       | Version or submission label displayed at the top of every HTML report (e.g. `"Sprint 42 - 2026-04-17"`). |
+| `jobs=N`           | No       | `4`     | Number of apps to lint in parallel. Increase for faster execution on multi-core machines. |
 
 ### Examples
 

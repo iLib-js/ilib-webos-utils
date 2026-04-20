@@ -22,6 +22,7 @@ OUTPUT_PATH="tmp"
 TARGET_APP=""
 FIX_MODE=""
 VERSION=""
+MAX_JOBS=4
 
 # -------------------------------
 # Help
@@ -29,7 +30,7 @@ VERSION=""
 show_help() {
     echo ""
     echo "Usage:"
-    echo "  $(basename "$0") <LOCDATA_PATH> [output=OUTPUT_PATH] [target=TARGET_APP] [fixmode=FIX_MODE] [version=submission/996]"
+    echo "  $(basename "$0") <LOCDATA_PATH> [output=OUTPUT_PATH] [target=TARGET_APP] [fixmode=FIX_MODE] [version=VERSION] [jobs=N]"
     echo ""
     echo "Arguments:"
     echo "  LOCDATA_PATH"
@@ -52,6 +53,10 @@ show_help() {
     echo "  version=VERSION (optional)"
     echo "    Submission label displayed at the top of the HTML report."
     echo "    e.g. version=\"Sprint 42 - 2026-04-17\""
+    echo ""
+    echo "  jobs=N (optional)"
+    echo "    Number of apps to lint in parallel."
+    echo "    Default: 4"
     echo ""
     echo "Examples:"
     echo "  $(basename "$0") ~/Source/localization-data/ output=RESULT target=app1"
@@ -83,6 +88,9 @@ for arg in "$@"; do
         version=*|--version=*)
             VERSION="${arg#*=}"
             ;;
+        jobs=*|--jobs=*)
+            MAX_JOBS="${arg#*=}"
+            ;;
         *)
             # First non-option argument is LOCDATA_PATH if not set
             if [ -z "$LOCDATA_PATH" ]; then
@@ -95,6 +103,7 @@ done
 DEFAULT_CONFIG_PATH="$(pwd)/ilib-lint-config.json"
 DEFAULT_LINT_PATH="$(pwd)"
 JSON_RESULT_PATH="$(pwd)/jsonOutput"
+ILIB_LINT_BIN="$DEFAULT_LINT_PATH/node_modules/.bin/ilib-lint"
 
 # -------------------------------
 # Argument validation
@@ -105,6 +114,7 @@ if [ -z "$LOCDATA_PATH" ]; then
     exit 1
 fi
 echo "📂 Using output directory: $OUTPUT_PATH"
+echo "⚡ Parallel jobs: $MAX_JOBS"
 
 if [ -n "$TARGET_APP" ]; then
     echo "🎯 Target app specified: $TARGET_APP"
@@ -160,6 +170,34 @@ normalize_path() {
     fi
 }
 
+# Run lint for a single app directory (called in a subshell)
+run_lint() {
+    local appDir="$1"
+    local normalized_dir safe_name lint_cmd
+
+    normalized_dir=$(normalize_path "$appDir")
+    safe_name=${normalized_dir//\//_}
+
+    echo "<<< $normalized_dir >>>"
+
+    lint_cmd=("$ILIB_LINT_BIN" \
+        -c "$DEFAULT_CONFIG_PATH" \
+        -i \
+        -f webos-json-formatter \
+        -o "$JSON_RESULT_PATH/${safe_name}-result.json" \
+        -n "$normalized_dir")
+
+    if [ -n "$FIX_MODE" ]; then
+        lint_cmd+=("${FIX_OPTIONS[@]}")
+    fi
+
+    pushd "$appDir" > /dev/null || return 1
+    "${lint_cmd[@]}"
+    popd > /dev/null
+
+    echo "==========================================================================="
+}
+
 # -------------------------------
 # Main logic
 # -------------------------------
@@ -174,65 +212,57 @@ main() {
     echo "📁 Changing working directory to LOCDATA_PATH: $LOCDATA_PATH"
     pushd "$LOCDATA_PATH" > /dev/null || exit 1
 
-    appCnt=0
     START_TIME=$(date +%s)
-    arrInvalidDir=()
-    EXCLUDED_DIRS=(
-        .
-    )
+    EXCLUDED_DIRS=(.)
 
-    # --overwrite : modify the original file
-    # --fix --write : generate .xliff.modified files with fixes
+    # Collect valid app directories first
+    valid_apps=()
     for appDir in */; do
-        appDir="${appDir%/}"  # Remove trailing slash
+        appDir="${appDir%/}"
         dirName=$(basename "$appDir")
 
-        # Skip if TARGET_APP is specified and this is not the target
         if [ -n "$TARGET_APP" ] && [ "$dirName" != "$TARGET_APP" ] && [ "$appDir" != "./$TARGET_APP" ]; then
             continue
         fi
 
         if [[ "$appDir" == "/.git*" || "$appDir" == "./git/*" ]]; then
-            arrInvalidDir+=("$appDir")
             continue
         fi
 
+        skip=false
         for excluded in "${EXCLUDED_DIRS[@]}"; do
             if [ "$dirName" == "$excluded" ]; then
-                arrInvalidDir+=("$appDir")
-                continue 2
+                skip=true
+                break
             fi
         done
+        $skip && continue
 
-        pushd "$appDir" > /dev/null || continue
-
-        appCnt=$((appCnt + 1))
-        normalized_dir=$(normalize_path "$appDir")
-        safe_name=${normalized_dir//\//_}
-
-        echo "<<< ($appCnt) $normalized_dir >>>"
-
-        lint_cmd=(npx ilib-lint \
-            -c "$DEFAULT_CONFIG_PATH" \
-            -i \
-            -f webos-json-formatter \
-            -o "$JSON_RESULT_PATH/${safe_name}-result.json" \
-            -n "$normalized_dir")
-        if [ -n "$FIX_MODE" ]; then
-            lint_cmd+=("${FIX_OPTIONS[@]}")
-        fi
-        "${lint_cmd[@]}"
-
-        popd > /dev/null
-        echo "==========================================================================="
+        valid_apps+=("$appDir")
     done
+
+    appCnt=${#valid_apps[@]}
+    echo "[[ Total directories to process: $appCnt ]]"
+    echo ""
+
+    # Process apps in parallel
+    for appDir in "${valid_apps[@]}"; do
+        run_lint "$appDir" &
+
+        # Wait if at max concurrent jobs
+        while [ "$(jobs -rp | wc -l)" -ge "$MAX_JOBS" ]; do
+            wait -n 2>/dev/null || true
+        done
+    done
+
+    # Wait for all remaining jobs
+    wait
 
     popd > /dev/null
 
+    END_TIME=$(date +%s)
     echo ""
     echo "✅ Lint results saved at: $JSON_RESULT_PATH"
-
-    END_TIME=$(date +%s)
     echo ""
     echo "[[ Total directories processed: $appCnt ]]"
     echo "<<< Time taken: $((END_TIME - START_TIME)) seconds >>>"
