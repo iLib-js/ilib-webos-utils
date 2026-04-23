@@ -25,7 +25,17 @@ import OptionsParser from 'options-parser';
 
 // Constants
 const DEFAULT_OUTPUT_DIR = './';
-const TOTAL_RESULT_FILENAME = '0.total-result.html';
+//const TOTAL_RESULT_FILENAME = '0.total-result.html';
+const TOTAL_RESULT_FILENAME = 'index.html';
+const APP_RESULTS_SUBDIR = 'apps';
+
+// Rule descriptions — add or update entries here manually
+const RULE_DESCRIPTIONS = {
+    'resource-named-params': { text: 'Ensure that named parameters that appear in the source string are also used in the translated string.', link: 'https://github.com/iLib-js/ilib-mono/blob/main/packages/ilib-lint/docs/resource-named-params.md' },
+    'resource-completeness': { text: 'Ensure that all resources in your project have either a source or target element defined', link: 'https://github.com/iLib-js/ilib-mono/blob/main/packages/ilib-lint/docs/resource-completeness.md' },
+    'resource-url-match': { text: 'Ensure that URLs that appear in the source string are also used in the translated string.', link: 'https://github.com/iLib-js/ilib-mono/blob/main/packages/ilib-lint/docs/resource-url-match.md' },
+    'resource-edge-whitespace': { text: 'Ensure that the whitespace at the edges of the target string exactly matches that of the source string, both at the beginning and at the end.', link: 'https://github.com/iLib-js/ilib-mono/blob/main/packages/ilib-lint/docs/resource-edge-whitespace.md' },
+};
 
 // Option configuration
 const optionConfig = {
@@ -54,6 +64,10 @@ const optionConfig = {
         flag: true,
         default: false,
         help: 'Only return errors and suppress warnings'
+    },
+    version: {
+        varName: 'version label',
+        help: 'Submission label displayed at the top of the HTML report'
     }
 };
 
@@ -61,6 +75,7 @@ const optionConfig = {
 const options = OptionsParser.parse(optionConfig).opt;
 const errorsOnly = options.errorsOnly ?? false;
 const outDir = options.outputDirectory || DEFAULT_OUTPUT_DIR;
+const version = options.version || '';
 
 let totalSummary = [];
 
@@ -125,7 +140,7 @@ function walkDirectory(dir) {
 function writeTotalSummaryResult(sumJsonData) {
     const sorted = [...sumJsonData].sort((a, b) => a.name.localeCompare(b.name));
     const html = [
-        getHeader("Summary of all app results"),
+        getHeader("Summary of All App Results"),
         getHtmlStyle(),
         getScript("case-filter.js"),
         buildTotalSummaryTable(sorted),
@@ -138,41 +153,98 @@ function writeTotalSummaryResult(sumJsonData) {
 
 function buildTotalSummaryTable(data) {
     let count = 0;
+    const totalErrors = data.reduce((sum, item) => sum + item.errors, 0);
+    const totalWarnings = data.reduce((sum, item) => sum + item.warnings, 0);
+    const appsWithIssues = data.filter(item => item.errors > 0 || item.warnings > 0).length;
+
+    const ruleTotal = data.reduce((acc, item) => {
+        if (!item.details) return acc;
+        for (const [rule, cnt] of Object.entries(item.details)) {
+            acc[rule] = (acc[rule] || 0) + cnt;
+        }
+        return acc;
+    }, {});
+    const ruleTotalRows = Object.entries(ruleTotal)
+        .sort((a, b) => b[1] - a[1])
+        .map(([rule, cnt]) => {
+            const entry = RULE_DESCRIPTIONS[rule];
+            const ruleName = entry?.link
+                ? `<a href="${escapeHtml(entry.link)}" target="_blank">${escapeHtml(rule)}</a>`
+                : escapeHtml(rule);
+            const desc = entry ? escapeHtml(entry.text ?? entry) : '';
+            return `
+    <tr>
+      <td class="col-rule">${ruleName}</td>
+      <td class="col-count">${cnt}</td>
+      <td class="col-desc">${desc}</td>
+    </tr>`;
+        }).join('');
+
     const rows = data.map(item => {
         const ruleInfo = buildRuleInfo(item.details);
         const nameColumn =
             item.errors === 0 && item.warnings === 0
                 ? escapeHtml(item.name)
-                : `<a href="./${escapeHtml(item.name)}-result.html">${escapeHtml(item.name)}</a>`;
+                : `<a href="./${APP_RESULTS_SUBDIR}/${escapeHtml(item.name)}-result.html">${escapeHtml(item.name)}</a>`;
 
-        //Add the 'no-issues' class to entries that have no errors or warnings
         const rowClass = (item.errors === 0 && item.warnings === 0) ? 'no-issues' : '';
 
         return `
         <tr class="${rowClass}">
-            <td class="highlight2">${++count}</td>
+            <td>${++count}</td>
             <td class="highlight">${nameColumn}</td>
-            <td class="highlight2 red">${item.errors}</td>
-            <td class="highlight2 orange">${item.warnings}</td>
-            <td class="highlight2">${ruleInfo}</td>
+            <td class="red">${item.errors}</td>
+            <td class="orange">${item.warnings}</td>
+            <td>${ruleInfo}</td>
         </tr>`;
     }).join('');
 
+    return buildPageHeader('Summary of All App Results') + `
+  <div class="stat-cards">
+    <div class="stat-card errors">
+      <div class="stat-label">Total Errors</div>
+      <div class="stat-value">${totalErrors}</div>
+    </div>
+    <div class="stat-card warnings">
+      <div class="stat-label">Total Warnings</div>
+      <div class="stat-value">${totalWarnings}</div>
+    </div>
+    <div class="stat-card total">
+      <div class="stat-label">Total Issues</div>
+      <div class="stat-value">${totalErrors + totalWarnings}</div>
+    </div>
+    <div class="stat-card apps-with-issues">
+      <div class="stat-label">Apps with Issues</div>
+      <div class="stat-value">${appsWithIssues} <span class="stat-total">/ ${data.length}</span></div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Issues by Rule</h2>
+    <table>
+      <thead><tr><th class="col-rule">Rule</th><th class="col-count">Count</th><th class="col-desc">Description</th></tr></thead>
+      <tbody>${ruleTotalRows}</tbody>
+    </table>
+  </div>
+  <div class="card">
+    <label><input type="checkbox" id="toggleNoIssues"> Show only apps with errors or warnings</label>
+    <table>
+      <thead><tr><th>#</th><th>Name</th><th>Errors</th><th>Warnings</th><th>Details</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  </div>`;
+}
+
+
+function buildPageHeader(title) {
+    const sub = version
+        ? `<p class="version-label">${escapeHtml(version)}</p>`
+        : '';
     return `
 <body>
-<h1>Summary of all app results</h1>
-<hr>
-<label><input type="checkbox" id="toggleNoIssues"> Showing only cases with errors/warnings</label>
-<table><thead>
-<tr>
-  <td class="highlight cell-bg"></td>
-  <td class="highlight cell-bg">Name</td>
-  <td class="highlight cell-bg">Errors</td>
-  <td class="highlight cell-bg">Warnings</td>
-  <td class="highlight cell-bg">Details</td>
-</tr>
-${rows}
-</thead></table>`;
+<div class="page-header">
+  <h1>${escapeHtml(title)}</h1>${sub}
+</div>
+<div class="page-wrapper">`;
 }
 
 function buildRuleInfo(details) {
@@ -229,7 +301,7 @@ function generateHtmlOutput(json, summaryInfo) {
     const resultFile = options.outputFileName ||
         `${json.summary.projectName}-result.html`;
 
-    const finalPath = path.join(outDir, resultFile);
+    const finalPath = path.join(outDir, APP_RESULTS_SUBDIR, resultFile);
     const dirPath = path.dirname(finalPath);
 
     if (!fs.existsSync(dirPath)) {
@@ -251,24 +323,34 @@ function getSummary(summary) {
     ];
     const [errFile, errMod, errLine] = ratio(summary.resultStats.errors);
     const [warnFile, warnMod, warnLine] = ratio(summary.resultStats.warnings);
-    const [sgFile, sgMod, sgLine] = ratio(summary.resultStats.suggestions);
 
-    return `
-<body>
-<h1>[${escapeHtml(summary.projectName)}] Summary</h1><hr>
-<table>
-  <thead>
-    <tr>
-      <td></td><td>Total</td><td>${summary.fileStats.files} Files</td>
-      <td>${summary.fileStats.modules} Modules</td>
-      <td>${summary.fileStats.lines} Lines</td>
-    </tr>
-    <tr><td class="highlight">Errors:</td><td class="red">${summary.resultStats.errors}</td><td>${errFile}</td><td>${errMod}</td><td>${errLine}</td></tr>
-    <tr><td class="highlight">Warnings:</td><td class="orange">${summary.resultStats.warnings}</td><td>${warnFile}</td><td>${warnMod}</td><td>${warnLine}</td></tr>
-    <tr><td class="highlight">Suggestions:</td><td>${summary.resultStats.suggestions}</td><td>${sgFile}</td><td>${sgMod}</td><td>${sgLine}</td></tr>
-    <tr><td class="highlight">I18N Score</td><td>${fmt.format(summary.score)}</td></tr>
-  </thead>
-</table><hr>`;
+    return buildPageHeader(`[${summary.projectName}] Summary`) + `
+  <div class="stat-cards">
+    <div class="stat-card errors">
+      <div class="stat-label">Errors</div>
+      <div class="stat-value">${summary.resultStats.errors}</div>
+    </div>
+    <div class="stat-card warnings">
+      <div class="stat-label">Warnings</div>
+      <div class="stat-value">${summary.resultStats.warnings}</div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Breakdown</h2>
+    <table>
+      <thead>
+        <tr>
+          <th></th><th>Total</th><th>${summary.fileStats.files} Files</th>
+          <th>${summary.fileStats.modules} Modules</th><th>${summary.fileStats.lines} Lines</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="highlight">Errors</td><td class="red">${summary.resultStats.errors}</td><td>${errFile}</td><td>${errMod}</td><td>${errLine}</td></tr>
+        <tr><td class="highlight">Warnings</td><td class="orange">${summary.resultStats.warnings}</td><td>${warnFile}</td><td>${warnMod}</td><td>${warnLine}</td></tr>
+
+      </tbody>
+    </table>
+  </div>`;
 }
 
 function getDetailResults(details, onlyErrors) {
@@ -279,46 +361,53 @@ function getDetailResults(details, onlyErrors) {
         .map(formatDetailResult)
         .join('');
 
-    return rows ? `<div id="detail-section"><h2>Detailed Information</h2>${rows}</div>` : '';
+    return rows ? `<div id="detail-section" class="card"><h2>Detailed Information</h2>${rows}</div>` : '';
 }
 
 function formatDetailResult(res) {
-    const color =
-        res.severity === 'error'
-            ? 'color:white;background-color:maroon;'
-            : 'color:white;background-color:orange;';
+    const severityClass = res.severity === 'error' ? 'severity-error' : 'severity-warning';
 
     const targetHighlighted = (res.highlight || '')
-        .replace(/<e\d>/g, '<span style="color:red">')
+        .replace(/<e\d>/g, '<span style="color:#e53e3e;font-weight:700;">')
         .replace(/<\/e\d>/g, '</span>');
+
+    const ruleEntry = RULE_DESCRIPTIONS[res.ruleName];
+    const ruleCell = ruleEntry?.link
+        ? `<a href="${escapeHtml(ruleEntry.link)}" target="_blank">${escapeHtml(res.ruleName)}</a>`
+        : escapeHtml(res.ruleName);
 
     const autofix = res?.fix?.applied || 'unavailable';
 
     return `
-<table>
-<thead><tr><th colspan="2" style="${color}">${escapeHtml(res.severity.toUpperCase())}</th></tr></thead>
-<tbody>
-  <tr><td>filepath</td><td>${escapeHtml(res.path)}</td></tr>
-  <tr><td>Description</td><td>${escapeHtml(res.description)}</td></tr>
-  <tr><td>key</td><td>${escapeHtml(res.key)}</td></tr>
-  <tr><td>source</td><td>${escapeHtml(res.source)}</td></tr>
-  <tr><td>target</td><td>${targetHighlighted}</td></tr>
-  <tr><td>rule</td><td>${escapeHtml(res.ruleName)}</td></tr>
-  <tr><td>rule Description</td><td>${escapeHtml(res.description)}</td></tr>
-  <tr><td>More info</td><td><a href="${escapeHtml(res.link)}">${escapeHtml(res.link)}</a></td></tr>
-  <tr><td>Auto-fix</td><td>${escapeHtml(autofix)}</td></tr>
-</tbody>
-</table>`;
+<div class="detail-card" data-rule="${escapeHtml(res.ruleName)}">
+  <div class="detail-header ${severityClass}">${res.severity.toUpperCase()}</div>
+  <table class="detail-table">
+  <tbody>
+    <tr><td class="detail-key">Rule</td><td>${ruleCell}</td></tr>
+    <tr><td class="detail-key">File</td><td>${escapeHtml(res.path)}</td></tr>
+    <tr><td class="detail-key">Key</td><td>${escapeHtml(res.key)}</td></tr>
+    <tr><td class="detail-key">Source</td><td>${escapeHtml(res.source)}</td></tr>
+    <tr><td class="detail-key">Target</td><td>${targetHighlighted}</td></tr>
+    <tr><td class="detail-key">Description</td><td>${escapeHtml(res.description)}</td></tr>
+    <tr><td class="detail-key">More info</td><td><a href="${escapeHtml(res.link)}" target="_blank">${escapeHtml(res.link)}</a></td></tr>
+    <tr><td class="detail-key">Auto-fix</td><td>${escapeHtml(autofix)}</td></tr>
+  </tbody>
+  </table>
+</div>`;
 }
 
 function getRules(rules) {
     if (!Array.isArray(rules) || rules.length === 0) return '';
-    let contents = '<h2>rules</h2><button id="select-all">Select All</button><button id="unselect-all">Deselect All</button><table><thead>';
+    let rows = '';
     rules.forEach(item => {
-        contents += `<tr><td class="highlight"><label><input type="checkbox" class="rule-check" value="${escapeHtml(item)}">${escapeHtml(item)}</label></td></tr>`;
+        rows += `<tr><td><label><input type="checkbox" class="rule-check" value="${escapeHtml(item)}">${escapeHtml(item)}</label></td></tr>`;
     });
-    contents += '</thead></table>';
-    return contents;
+    return `
+<div class="card">
+  <h2>Rules</h2>
+  <button id="select-all">Select All</button><button id="unselect-all" class="secondary">Deselect All</button>
+  <table class="compact"><tbody>${rows}</tbody></table>
+</div>`;
 }
 
 function getHeader(title) {
@@ -326,7 +415,7 @@ function getHeader(title) {
 }
 
 function getFooter() {
-    return `</body></html>`;
+    return `</div></body></html>`;
 }
 
 function getScript(filename) {

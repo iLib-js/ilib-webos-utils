@@ -1,79 +1,93 @@
 # lint
-It provides a script to lint localization data and generate an HTML report.  
-execute-lint.sh is a Bash script that runs ilib-lint
-on all subdirectories of a specified localization data directory and generates a consolidated HTML lint report from the results.
 
-## Example Directory Structure
-```bash
-project-root/
-├── execute-lint.sh
-├── pre-requisite.sh
-├── ilib-lint-config.json
+Provides a script to lint localization data and generate HTML reports.  
+`execute-lint.sh` runs `ilib-lint` on all subdirectories of a specified localization data directory and produces a consolidated HTML report.
+
+## Directory Structure
+
+```
+lint/
+├── execute-lint.sh          # Main script to run lint and generate HTML
+├── pre-requisite.sh         # One-time setup script
+├── ilib-lint-config.json    # ilib-lint configuration
 ├── convertHtml/
-│   └── convertHtml.js
-├── jsonOutput/        # Generated during execution (auto-removed)
-└── tmp/               # Final HTML output directory
+│   ├── convertHtml.js       # Converts JSON lint results to HTML
+│   ├── case-filter.js       # Client-side filter for the total summary page
+│   ├── rule-filter.js       # Client-side filter for individual app pages
+│   └── style.css            # Shared stylesheet for all HTML reports
+├── jsonOutput/              # Intermediate JSON results (auto-removed after conversion)
+└── tmp/                     # Final HTML output directory (default)
 ```
 
-## Prerequisites (pre-requisite.sh)
-This script automatically sets up the Node.js environment and prepares the system to run ilib-lint.   
-It should be executed once before running the linting process or when setting up a new environment.
+## Prerequisites
+
+Run once before the first use, or when setting up a new environment:
 
 ```bash
 ./pre-requisite.sh
 ```
-This ensures that all required Node packages (including ilib-lint) are available.
 
-## Execute the script (execute-lint.sh)
+This installs all required Node.js packages including `ilib-lint`.
 
-### Usage
+## Usage
+
 ```bash
-./execute-lint.sh <LOCDATA_PATH> [output=OUTPUT_PATH] [target=TARGET_APP] [fixmode=FIX_MODE]
-```
-#### Example
-```bash
-./execute-lint.sh ~/Source/localization-data target=app1 output=RESULT fixmode=fix
-
-    ~/Source/localization-data
-    → Root directory containing localization data to be linted
-
-    output=OUTPUT_PATH (optional)
-    → Directory where the final HTML report will be generated
-    → Default: ./tmp
-
-    target=TARGET_APP (optional)
-    → Specific app directory name to lint.
-    → If provided, only this app will be processed.
-
-    fixmode=FIX_MODE (optional)
-    → Lint mode: 'overwrite' or 'fix'
-    →    - overwrite: Use --overwrite option
-    →    - fix: Use --fix --write options
-    →    If not provided, no fix mode option will be passed.
-
+./execute-lint.sh <LOCDATA_PATH> [output=OUTPUT_PATH] [target=TARGET_APP] [fixmode=FIX_MODE] [version=VERSION] [jobs=N]
 ```
 
-#### Arguments
+### Arguments
 
-| Argument             | Required | Description                                                                 |
-|----------------------|----------|-----------------------------------------------------------------------------|
-| LOCDATA_PATH         | Yes      | Path to the root directory to be linted. All subdirectories (excluding .git) are processed individually. |
-| output=OUTPUT_PATH   | No       | Directory where the final HTML report will be generated. Default: ./tmp      |
-| target=TARGET_APP    | No       | Specific app directory name to lint. If provided, only this app will be processed. |
-| fixmode=FIX_MODE     | No       | Lint mode: 'overwrite' (use --overwrite) or 'fix' (use --fix --write). If not provided, no fix mode option will be passed. |
+| Argument           | Required | Default | Description |
+|--------------------|----------|---------|-------------|
+| `LOCDATA_PATH`     | Yes      | —       | Root directory containing localization data. All subdirectories (excluding `.git`) are processed individually. |
+| `output=PATH`      | No       | `./tmp` | Directory where the final HTML reports will be generated. |
+| `target=APP`       | No       | —       | Lint only the specified app directory. If omitted, all subdirectories are processed. |
+| `fixmode=MODE`     | No       | —       | `overwrite`: apply fixes in-place (`--overwrite`). `fix`: write fix files (`--fix --write`). |
+| `version=LABEL`    | No       | —       | Version or submission label displayed at the top of every HTML report (e.g. `"Sprint 42 - 2026-04-17"`). |
+| `jobs=N`           | No       | `4`     | Number of apps to lint in parallel. Increase for faster execution on multi-core machines. |
 
-## How It Works
-1. Create (or clean) required output directories.
-2. Change working directory to `LOCDATA_PATH`.
-3. Iterate through each subdirectory.
-4. Run ilib-lint with the predefined configuration.
-5. Save lint results as JSON files.
-6. Convert all JSON results into a consolidated HTML report.
-7. Remove intermediate JSON output files.
+### Examples
 
-## Help
-To display usage instructions:
+```bash
+# Lint all apps, output to ./tmp
+./execute-lint.sh ~/Source/localization-data/
+
+# Lint a single app, save to ./RESULT
+./execute-lint.sh ~/Source/localization-data/ target=app1 output=RESULT
+
+# Lint with fix mode and a version label
+./execute-lint.sh ~/Source/localization-data/ output=RESULT fixmode=fix version="Sprint 42 - 2026-04-17"
+```
+
+### Help
+
 ```bash
 ./execute-lint.sh -h
-./execute-lint.sh --help
 ```
+
+## How It Works
+
+1. Creates (or cleans) the intermediate `jsonOutput/` and final output directories.
+2. Changes into `LOCDATA_PATH` and iterates through each subdirectory.
+3. Runs `ilib-lint` per app and saves JSON results to `jsonOutput/`.
+4. Converts all JSON results to HTML via `convertHtml/convertHtml.js`.
+5. Removes the intermediate `jsonOutput/` directory.
+
+## HTML Reports
+
+### Total Summary — `0.total-result.html`
+
+Aggregated view across all apps:
+
+- **Stat cards** — Total Errors, Total Warnings, Total Issues, Apps with Issues
+- **Issues by Rule** — per-rule violation count and description, sorted by count
+- **App list** — per-app errors/warnings with a link to the individual report. Checkbox to show only apps with issues.
+
+### Individual App — `{app}-result.html`
+
+Per-app detail view:
+
+- **Stat cards** — Errors, Warnings
+- **Breakdown table** — counts broken down by files, modules, and lines
+- **Rules** — checkboxes to filter the detail section by rule
+- **Detailed Information** — one card per violation showing rule, file, key, source, target, description, link, and auto-fix status
