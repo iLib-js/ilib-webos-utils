@@ -20,7 +20,7 @@
  */
 
 import path from 'node:path';
-import fs from 'fs';
+import fs from 'node:fs';
 import OptionsParser from 'options-parser';
 
 // Constants
@@ -35,6 +35,8 @@ const RULE_DESCRIPTIONS = {
     'resource-completeness': { text: 'Ensure that all resources in your project have either a source or target element defined', link: 'https://github.com/iLib-js/ilib-mono/blob/main/packages/ilib-lint/docs/resource-completeness.md' },
     'resource-url-match': { text: 'Ensure that URLs that appear in the source string are also used in the translated string.', link: 'https://github.com/iLib-js/ilib-mono/blob/main/packages/ilib-lint/docs/resource-url-match.md' },
     'resource-edge-whitespace': { text: 'Ensure that the whitespace at the edges of the target string exactly matches that of the source string, both at the beginning and at the end.', link: 'https://github.com/iLib-js/ilib-mono/blob/main/packages/ilib-lint/docs/resource-edge-whitespace.md' },
+    'resource-sentence-ending': { text: 'Ensure that sentence-ending punctuation in translated strings matches the conventions of the target language', link: 'https://github.com/iLib-js/ilib-mono/blob/main/packages/ilib-lint/docs/resource-sentence-ending.md' },
+    'resource-quote-style': { text: 'Ensure that if the source string contains quotation marks, the target string also includes appropriate quotation marks according to the locale.', link: 'https://github.com/iLib-js/ilib-mono/blob/main/packages/ilib-lint/docs/resource-quote-style.md' },
 };
 
 // Option configuration
@@ -153,6 +155,7 @@ function writeTotalSummaryResult(sumJsonData) {
 
 function buildTotalSummaryTable(data) {
     let count = 0;
+    const fmt = new Intl.NumberFormat("en-US");
     const totalErrors = data.reduce((sum, item) => sum + item.errors, 0);
     const totalWarnings = data.reduce((sum, item) => sum + item.warnings, 0);
     const appsWithIssues = data.filter(item => item.errors > 0 || item.warnings > 0).length;
@@ -175,7 +178,7 @@ function buildTotalSummaryTable(data) {
             return `
     <tr>
       <td class="col-rule">${ruleName}</td>
-      <td class="col-count">${cnt}</td>
+      <td class="col-count">${fmt.format(cnt)}</td>
       <td class="col-desc">${desc}</td>
     </tr>`;
         }).join('');
@@ -193,8 +196,8 @@ function buildTotalSummaryTable(data) {
         <tr class="${rowClass}">
             <td>${++count}</td>
             <td class="highlight">${nameColumn}</td>
-            <td class="red">${item.errors}</td>
-            <td class="orange">${item.warnings}</td>
+            <td class="red">${fmt.format(item.errors)}</td>
+            <td class="orange">${fmt.format(item.warnings)}</td>
             <td>${ruleInfo}</td>
         </tr>`;
     }).join('');
@@ -203,19 +206,19 @@ function buildTotalSummaryTable(data) {
   <div class="stat-cards">
     <div class="stat-card errors">
       <div class="stat-label">Total Errors</div>
-      <div class="stat-value">${totalErrors}</div>
+      <div class="stat-value">${fmt.format(totalErrors)}</div>
     </div>
     <div class="stat-card warnings">
       <div class="stat-label">Total Warnings</div>
-      <div class="stat-value">${totalWarnings}</div>
+      <div class="stat-value">${fmt.format(totalWarnings)}</div>
     </div>
     <div class="stat-card total">
       <div class="stat-label">Total Issues</div>
-      <div class="stat-value">${totalErrors + totalWarnings}</div>
+      <div class="stat-value">${fmt.format(totalErrors + totalWarnings)}</div>
     </div>
     <div class="stat-card apps-with-issues">
       <div class="stat-label">Apps with Issues</div>
-      <div class="stat-value">${appsWithIssues} <span class="stat-total">/ ${data.length}</span></div>
+      <div class="stat-value">${fmt.format(appsWithIssues)} <span class="stat-total">/ ${fmt.format(data.length)}</span></div>
     </div>
   </div>
   <div class="card">
