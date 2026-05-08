@@ -331,11 +331,11 @@ function getSummary(summary) {
   <div class="stat-cards">
     <div class="stat-card errors">
       <div class="stat-label">Errors</div>
-      <div class="stat-value">${summary.resultStats.errors}</div>
+      <div class="stat-value">${fmt.format(summary.resultStats.errors)}</div>
     </div>
     <div class="stat-card warnings">
       <div class="stat-label">Warnings</div>
-      <div class="stat-value">${summary.resultStats.warnings}</div>
+      <div class="stat-value">${fmt.format(summary.resultStats.warnings)}</div>
     </div>
   </div>
   <div class="card">
@@ -343,13 +343,13 @@ function getSummary(summary) {
     <table>
       <thead>
         <tr>
-          <th></th><th>Total</th><th>${summary.fileStats.files} Files</th>
-          <th>${summary.fileStats.modules} Modules</th><th>${summary.fileStats.lines} Lines</th>
+          <th></th><th>Total</th><th>${fmt.format(summary.fileStats.files)} Files</th>
+          <th>${fmt.format(summary.fileStats.modules)} Modules</th><th>${fmt.format(summary.fileStats.lines)} Lines</th>
         </tr>
       </thead>
       <tbody>
-        <tr><td class="highlight">Errors</td><td class="red">${summary.resultStats.errors}</td><td>${errFile}</td><td>${errMod}</td><td>${errLine}</td></tr>
-        <tr><td class="highlight">Warnings</td><td class="orange">${summary.resultStats.warnings}</td><td>${warnFile}</td><td>${warnMod}</td><td>${warnLine}</td></tr>
+        <tr><td class="highlight">Errors</td><td class="red">${fmt.format(summary.resultStats.errors)}</td><td>${errFile}</td><td>${errMod}</td><td>${errLine}</td></tr>
+        <tr><td class="highlight">Warnings</td><td class="orange">${fmt.format(summary.resultStats.warnings)}</td><td>${warnFile}</td><td>${warnMod}</td><td>${warnLine}</td></tr>
 
       </tbody>
     </table>
