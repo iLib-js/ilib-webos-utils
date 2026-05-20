@@ -97,5 +97,5 @@ pip install pandas openpyxl
 ### Running Tests
 
 ```
-bats test_xliff_delete_units.bats
+bats test-xliff-delete-units.bats
 ```
