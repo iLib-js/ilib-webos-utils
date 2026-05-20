@@ -84,5 +84,26 @@ else
   fi
 fi
 
-echo "✅ Setup complete!"
+# -----------------------------------------------
+# Step 5: Install pandas and openpyxl for Python
+# -----------------------------------------------
+if command -v python3 >/dev/null 2>&1; then
+  echo "Checking for pandas and openpyxl..."
+  if python3 -c "import pandas, openpyxl" 2>/dev/null; then
+    echo "pandas and openpyxl already installed."
+  else
+    echo "Installing pandas and openpyxl via pip..."
+    python3 -m pip install --user pandas openpyxl
+    if python3 -c "import pandas, openpyxl" 2>/dev/null; then
+      echo "pandas $(python3 -c 'import pandas; print(pandas.__version__)')"
+      echo "openpyxl $(python3 -c 'import openpyxl; print(openpyxl.__version__)')"
+    else
+      echo "Error: Failed to install pandas or openpyxl. Please check your Python/pip setup."
+      exit 1
+    fi
+  fi
+else
+  echo "Warning: python3 not found. Skipping pandas/openpyxl installation."
+fi
 
+echo "✅ Setup complete!"
