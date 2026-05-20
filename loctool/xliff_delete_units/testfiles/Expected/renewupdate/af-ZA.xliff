@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" xmlns:mda="urn:oasis:names:tc:xliff:metadata:2.0" srcLang="en-KR" trgLang="af-ZA" version="2.0">
+  <file id="renewupdate_f1" original="renewupdate">
+    <group id="renewupdate_g1" name="javascript">
+      <unit id="renewupdate_g1_1">
+        <notes>
+          <note>[251121_Copy][tips_0317]</note>
+        </notes>
+        <segment>
+          <source>webOS Re:New Program</source>
+          <target>webOS Re:Nuwe program</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_2">
+        <notes>
+          <note>[251121_Copy][settings_general_0368]</note>
+        </notes>
+        <segment>
+          <source>Do you want to proceed?</source>
+          <target>Wil jy voortgaan?</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_3">
+        <notes>
+          <note>[251121_Copy][tar_0030]</note>
+        </notes>
+        <segment>
+          <source>Later</source>
+          <target>Later</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_4">
+        <notes>
+          <note>[251121_Copy][legacy_common_1092]</note>
+        </notes>
+        <segment>
+          <source>Yes</source>
+          <target>Ja</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_5">
+        <notes>
+          <note>[251121_Copy][legacy_common_1093]</note>
+        </notes>
+        <segment>
+          <source>No</source>
+          <target>Nee</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_6">
+        <notes>
+          <note>[251121_Copy][legacy_common_1042]</note>
+        </notes>
+        <segment>
+          <source>Close</source>
+          <target>Maak toe</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_7">
+        <notes>
+          <note>[251121_Copy][chatbot_0278]</note>
+        </notes>
+        <segment>
+          <source>Do you want to go to Network Settings now to check the connection?</source>
+          <target>Wil jy nou na Netwerkinstellings gaan om die verbinding na te gaan?</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_8">
+        <notes>
+          <note>[251121_Copy][legacy_common_1131]</note>
+        </notes>
+        <segment>
+          <source>Network Settings</source>
+          <target>Netwerkinstellings</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_9">
+        <notes>
+          <note>[251121_Copy][legacy_common_1051]</note>
+        </notes>
+        <segment>
+          <source>Cancel</source>
+          <target>Kanselleer</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_10">
+        <mda:metadata>
+          <mda:metaGroup category="device-type">
+            <mda:meta type="Monitor">Opgradering sal begin wanneer die monitor afgeskakel is.</mda:meta>
+            <mda:meta type="Projector">Opgradering sal begin wanneer die projektor afgeskakel is.</mda:meta>
+            <mda:meta type="StanbyME">Opgradering sal begin wanneer die StanbyME afgeskakel is.</mda:meta>
+          </mda:metaGroup>
+        </mda:metadata>
+        <notes>
+          <note>[251203_webOS26MR1_1st][renew_0013]</note>
+        </notes>
+        <segment>
+          <source>Upgrade will begin when the %deviceType% is turned off.</source>
+          <target>Opgradering sal begin wanneer die TV afgeskakel is.</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_11">
+        <notes>
+          <note>[251203_webOS26MR1_1st][renew_0016]</note>
+        </notes>
+        <segment>
+          <source>Starting upgrade.</source>
+          <target>Begin tans opgradering.</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_12">
+        <notes>
+          <note>[251203_webOS26MR1_1st][renew_0005]</note>
+        </notes>
+        <segment>
+          <source>Upgrade to {arg1} and experience the new webOS.</source>
+          <target>Gradeer op na {arg1} en ervaar die nuwe webOS.</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_13">
+        <notes>
+          <note>[251203_webOS26MR1_1st][renew_0010]</note>
+        </notes>
+        <segment>
+          <source>Exit the current screen without upgrading.</source>
+          <target>Verlaat die huidige skerm sonder opgradering.</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_14">
+        <notes>
+          <note>[251203_webOS26MR1_1st][renew_0008]</note>
+        </notes>
+        <segment>
+          <source>Upgrade while powered off</source>
+          <target>Gradeer op terwyl dit afgeskakel is.</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_15">
+        <notes>
+          <note>[251203_webOS26MR1_1st][renew_0006]</note>
+        </notes>
+        <segment>
+          <source>Enhanced smarter AI and new smart features will make your daily life even more special.</source>
+          <target>Verbeterde, slimmer AI en nuwe slimkenmerke sal jou daaglikse lewe selfs meer spesiaal maak.</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_16">
+        <notes>
+          <note>[251203_webOS26MR1_1st][renew_0007]</note>
+        </notes>
+        <segment>
+          <source>Upgrade now and explore the completely new platform.</source>
+          <target>Gradeer nou op en verken die splinternuwe platform.</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_17">
+        <notes>
+          <note>[251203_webOS26MR1_1st][renew_0011]</note>
+        </notes>
+        <segment>
+          <source>View Details</source>
+          <target>Bekyk besonderhede</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_18">
+        <mda:metadata>
+          <mda:metaGroup category="device-type">
+            <mda:meta type="Monitor">Die opgradering sal loop terwyl jou monitor afgeskakel is.</mda:meta>
+            <mda:meta type="Projector">Die opgradering sal loop terwyl jou projektor afgeskakel is.</mda:meta>
+            <mda:meta type="StanbyME">Die opgradering sal loop terwyl jou StanbyME afgeskakel is.</mda:meta>
+          </mda:metaGroup>
+        </mda:metadata>
+        <notes>
+          <note>[251203_webOS26MR1_1st][renew_0012]</note>
+        </notes>
+        <segment>
+          <source>The upgrade will run while your %deviceType% is off.</source>
+          <target>Die opgradering sal loop terwyl jou TV afgeskakel is.</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_19">
+        <notes>
+          <note>[251203_webOS26MR1_1st][renew_0014]</note>
+        </notes>
+        <segment>
+          <source>You can start the upgrade right now.</source>
+          <target>Jy kan dadelik die opgradering begin.</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_20">
+        <notes>
+          <note>[251203_webOS26MR1_1st][renew_0015]</note>
+        </notes>
+        <segment>
+          <source>The upgrade is in progress in the background.</source>
+          <target>Die opgradering is tans in die agtergrond aan die gang.</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_21">
+        <notes>
+          <note>[251203_webOS26MR1_1st][renew_0009]</note>
+        </notes>
+        <segment>
+          <source>Upgrade Now</source>
+          <target>Gradeer nou op</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_22">
+        <notes>
+          <note>[251203_webOS26MR1_1st][renew_0020]</note>
+        </notes>
+        <segment>
+          <source>Unable to upgrade because the network is not connected.</source>
+          <target>Kan nie opgradeer nie, want die netwerk is nie verbind nie.</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_23">
+        <notes>
+          <note>[251208_Copy][legacy_common_1101]</note>
+        </notes>
+        <segment>
+          <source>OK</source>
+          <target>GOED</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_24">
+        <notes>
+          <note>[260108_webOS26MR1_2nd][renew_0025]</note>
+        </notes>
+        <segment>
+          <source>Please connect a USB and try again.</source>
+          <target>Koppel asseblief ’n USB en probeer dan weer.</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_25">
+        <notes>
+          <note>[260108_webOS26MR1_2nd][renew_0024]</note>
+        </notes>
+        <segment>
+          <source>Unable to upgrade because the USB is not connected.</source>
+          <target>Kan nie opgradeer nie, want die USB is nie verbind nie.</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_26">
+        <notes>
+          <note>[260108][Copy][renew_0002]</note>
+        </notes>
+        <segment>
+          <source>Start your upgrade now.</source>
+          <target>Begin nou jou opgradering.</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_27">
+        <notes>
+          <note>[260108][Copy][renew_0027]</note>
+        </notes>
+        <segment>
+          <source>Remove unused apps or content from {arg1} and try again.</source>
+          <target>Verwyder ongebruikte toeps of inhoud van {arg1} en probeer weer.</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_28">
+        <notes>
+          <note>[260108][Copy][renew_0026]</note>
+        </notes>
+        <segment>
+          <source>Unable to upgrade due to insufficient storage space.</source>
+          <target>Kon nie opgradeer nie weens onvoldoende stoorplek.</target>
+        </segment>
+      </unit>
+    </group>
+  </file>
+</xliff>

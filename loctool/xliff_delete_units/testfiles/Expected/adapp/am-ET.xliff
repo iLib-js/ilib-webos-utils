@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" xmlns:mda="urn:oasis:names:tc:xliff:metadata:2.0" srcLang="en-KR" trgLang="am-ET" version="2.0">
+  <file id="adapp_f1" original="adapp">
+    <group id="adapp_g1" name="javascript">
+      <unit id="adapp_g1_1">
+        <notes>
+          <note>Advertisement</note>
+        </notes>
+        <segment>
+          <source>Sponsored ad</source>
+          <target>ስፖንሰር የተደረገ ማስታወቂያ</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_2">
+        <notes>
+          <note>Advertisement</note>
+        </notes>
+        <segment>
+          <source>Exit ad</source>
+          <target>ከማስታወቂያ ይውጡ</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_3">
+        <segment>
+          <source>button</source>
+          <target>አዝራር</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_4">
+        <notes>
+          <note>Advertisement</note>
+        </notes>
+        <segment>
+          <source>OK</source>
+          <target>እሺ</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_5">
+        <segment>
+          <source>more</source>
+          <target>ተጨማሪ</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_6">
+        <notes>
+          <note>a sentence on the network error popup</note>
+        </notes>
+        <segment>
+          <source>NETWORK DISCONNECTED</source>
+          <target>አውታመረብ ተቋርጧል</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_7">
+        <notes>
+          <note>a sentence on the network error popup</note>
+        </notes>
+        <segment>
+          <source>Check the network connection.</source>
+          <target>የአውታረመረብ ግንኙነቱን ይፈትሹ።</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_8">
+        <notes>
+          <note>a sentence on the temporary error popup</note>
+        </notes>
+        <segment>
+          <source>TEMPORARY PROBLEM</source>
+          <target>ግዚያዊ ችግር</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_9">
+        <notes>
+          <note>Advertisement</note>
+        </notes>
+        <segment>
+          <source>Service is temporarily unavailable. Try again later.</source>
+          <target>ለጊዜው አገልግሎት የለም። በኋላ በድጋሚ ይሞክሩ።</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_10">
+        <notes>
+          <note>Advertisement</note>
+        </notes>
+        <segment>
+          <source>LG Electronics, Inc.</source>
+          <target>LG ኤሌክትሮኒክስ፣ Inc.</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_11">
+        <notes>
+          <note>Advertisement</note>
+        </notes>
+        <segment>
+          <source>Advertisement</source>
+          <target>ማስታወቂያ</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_12">
+        <segment>
+          <source>Network is not connected. Please check the network connection.</source>
+          <target>አውታረ መረብ አልተገናኘም። እባክዎ የአውታረ መረብ ግንኙነቱን ይፈትሹ።</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_13">
+        <notes>
+          <note>Advertisement</note>
+        </notes>
+        <segment>
+          <source>Check the network connection. Do you want to go to 'Network Setting' for internet connection?</source>
+          <target>የአውታረ መረብ ግንኙነቱን ይፈትሹ። ለበይነ መረብ ትስስር ወደ 'አውታረ መረብ ቅንብር' መሄድ ይፈልጋሉ?</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_14">
+        <notes>
+          <note>copy strings from tips by WEBOSLOCAL-6094</note>
+        </notes>
+        <segment>
+          <source>YES</source>
+          <target>አዎ</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_15">
+        <notes>
+          <note>copy strings from tips by WEBOSLOCAL-6094</note>
+        </notes>
+        <segment>
+          <source>NO</source>
+          <target>አይ</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_16">
+        <notes>
+          <note>Advertisement</note>
+        </notes>
+        <segment>
+          <source>Yes</source>
+          <target>አዎ</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_17">
+        <notes>
+          <note>Advertisement</note>
+        </notes>
+        <segment>
+          <source>No</source>
+          <target>አይ</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_18">
+        <notes>
+          <note>Advertisement</note>
+        </notes>
+        <segment>
+          <source>This app is no longer supported.</source>
+          <target>ይህ አፕ ከዚህ በኋላ ተቀባይነት አጥቷል።</target>
+        </segment>
+      </unit>
+    </group>
+  </file>
+</xliff>

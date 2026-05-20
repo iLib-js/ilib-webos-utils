@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" xmlns:mda="urn:oasis:names:tc:xliff:metadata:2.0" srcLang="en-KR" trgLang="am-ET" version="2.0">
+  <file id="renewupdate_f1" original="renewupdate">
+    <group id="renewupdate_g1" name="javascript">
+      <unit id="renewupdate_g1_1">
+        <notes>
+          <note>[251121_Copy][tips_0317]</note>
+        </notes>
+        <segment>
+          <source>webOS Re:New Program</source>
+          <target>webOS Re:አዲስ ፕሮግራም</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_2">
+        <notes>
+          <note>[251121_Copy][settings_general_0368]</note>
+        </notes>
+        <segment>
+          <source>Do you want to proceed?</source>
+          <target>መቀጠል ይፈልጋሉ?</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_3">
+        <notes>
+          <note>[251121_Copy][tar_0030]</note>
+        </notes>
+        <segment>
+          <source>Later</source>
+          <target>በኋላ</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_4">
+        <notes>
+          <note>[251121_Copy][legacy_common_1092]</note>
+        </notes>
+        <segment>
+          <source>Yes</source>
+          <target>አዎ</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_5">
+        <notes>
+          <note>[251121_Copy][legacy_common_1093]</note>
+        </notes>
+        <segment>
+          <source>No</source>
+          <target>አይ</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_6">
+        <notes>
+          <note>[251121_Copy][legacy_common_1042]</note>
+        </notes>
+        <segment>
+          <source>Close</source>
+          <target>ዝጋ</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_7">
+        <notes>
+          <note>[251121_Copy][chatbot_0278]</note>
+        </notes>
+        <segment>
+          <source>Do you want to go to Network Settings now to check the connection?</source>
+          <target>ግንኙትዎን ለመፈተሸ አሁኑኑ ወደ አውታመረብ ቅንብሮች መሄድ ይፈልጋሉ?</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_8">
+        <notes>
+          <note>[251121_Copy][legacy_common_1131]</note>
+        </notes>
+        <segment>
+          <source>Network Settings</source>
+          <target>የአውታረ መረብ ቅንብሮች</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_9">
+        <notes>
+          <note>[251121_Copy][legacy_common_1051]</note>
+        </notes>
+        <segment>
+          <source>Cancel</source>
+          <target>ተወው</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_10">
+        <mda:metadata>
+          <mda:metaGroup category="device-type">
+            <mda:meta type="Monitor">ሞኒተሩ ሲጠፋ ማዘመኑ ይጀምራል።</mda:meta>
+            <mda:meta type="Projector">ፕሮጀክተሩ ሲጠፋ ማዘመኑ ይጀምራል።</mda:meta>
+            <mda:meta type="StanbyME">ዝማኔው የሚጀምረው StanbyME ሲጠፋ ነው።</mda:meta>
+          </mda:metaGroup>
+        </mda:metadata>
+        <notes>
+          <note>[251203_webOS26MR1_1st][renew_0013]</note>
+        </notes>
+        <segment>
+          <source>Upgrade will begin when the %deviceType% is turned off.</source>
+          <target>ቲቪው ሲጠፋ ማዘመኑ ይጀምራል።</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_11">
+        <notes>
+          <note>[251203_webOS26MR1_1st][renew_0016]</note>
+        </notes>
+        <segment>
+          <source>Starting upgrade.</source>
+          <target>ዝማኔን በማስጀመር ላይ።</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_12">
+        <notes>
+          <note>[251203_webOS26MR1_1st][renew_0005]</note>
+        </notes>
+        <segment>
+          <source>Upgrade to {arg1} and experience the new webOS.</source>
+          <target>ወደ {arg1} ያዘምኑ እና አዲሱን webOS ይለማመዱ።</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_13">
+        <notes>
+          <note>[251203_webOS26MR1_1st][renew_0010]</note>
+        </notes>
+        <segment>
+          <source>Exit the current screen without upgrading.</source>
+          <target>ሳያዘምኑ ከአሁኑ ማያ ገጽ ይውጡ።</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_14">
+        <notes>
+          <note>[251203_webOS26MR1_1st][renew_0008]</note>
+        </notes>
+        <segment>
+          <source>Upgrade while powered off</source>
+          <target>ኃይል ሲጠፋ አዘምን</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_15">
+        <notes>
+          <note>[251203_webOS26MR1_1st][renew_0006]</note>
+        </notes>
+        <segment>
+          <source>Enhanced smarter AI and new smart features will make your daily life even more special.</source>
+          <target>የተሻሻሉት ብልህ AI እና አዳዲስ ስማርት ባህሪያት የዕለት ተዕለት ሕይወትዎን የበለጠ ልዩ ያደርጉታል።</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_16">
+        <notes>
+          <note>[251203_webOS26MR1_1st][renew_0007]</note>
+        </notes>
+        <segment>
+          <source>Upgrade now and explore the completely new platform.</source>
+          <target>አሁኑኑ ያዘምኑ እና ሙሉ በሙሉ አዲሱን መድረክ ያስሱ።</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_17">
+        <notes>
+          <note>[251203_webOS26MR1_1st][renew_0011]</note>
+        </notes>
+        <segment>
+          <source>View Details</source>
+          <target>ዝርዝሮችን ይመልከቱ</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_18">
+        <mda:metadata>
+          <mda:metaGroup category="device-type">
+            <mda:meta type="Monitor">ሞኒተርዎ ሲጠፋ ዝማኔው ይሰራል።</mda:meta>
+            <mda:meta type="Projector">ፕሮጀክተርዎ ሲጠፋ ዝማኔው ይሰራል።</mda:meta>
+            <mda:meta type="StanbyME">የእርስዎ StanbyME ሲጠፋ ዝማኔ ይሰራል።</mda:meta>
+          </mda:metaGroup>
+        </mda:metadata>
+        <notes>
+          <note>[251203_webOS26MR1_1st][renew_0012]</note>
+        </notes>
+        <segment>
+          <source>The upgrade will run while your %deviceType% is off.</source>
+          <target>ቲቪዎ ሲጠፋ ዝማኔው ይሰራል።</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_19">
+        <notes>
+          <note>[251203_webOS26MR1_1st][renew_0014]</note>
+        </notes>
+        <segment>
+          <source>You can start the upgrade right now.</source>
+          <target>ዝማኔውን አሁን ማስጀመር ይችላሉ።</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_20">
+        <notes>
+          <note>[251203_webOS26MR1_1st][renew_0015]</note>
+        </notes>
+        <segment>
+          <source>The upgrade is in progress in the background.</source>
+          <target>ዝማኔው ከጀርባ በሂደት ላይ ነው።</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_21">
+        <notes>
+          <note>[251203_webOS26MR1_1st][renew_0009]</note>
+        </notes>
+        <segment>
+          <source>Upgrade Now</source>
+          <target>አሁኑ ያዘምኑ</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_22">
+        <notes>
+          <note>[251203_webOS26MR1_1st][renew_0020]</note>
+        </notes>
+        <segment>
+          <source>Unable to upgrade because the network is not connected.</source>
+          <target>አውታረ መረቡ ስላልተገናኘ ማዘመን አልተቻለም።</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_23">
+        <notes>
+          <note>[251208_Copy][legacy_common_1101]</note>
+        </notes>
+        <segment>
+          <source>OK</source>
+          <target>እሺ</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_24">
+        <notes>
+          <note>[260108_webOS26MR1_2nd][renew_0025]</note>
+        </notes>
+        <segment>
+          <source>Please connect a USB and try again.</source>
+          <target>እባክዎ USB ያገናኙና እንደገና ይሞክሩ።</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_25">
+        <notes>
+          <note>[260108_webOS26MR1_2nd][renew_0024]</note>
+        </notes>
+        <segment>
+          <source>Unable to upgrade because the USB is not connected.</source>
+          <target>USB ስላልተገናኘ ማዘመን አልተቻለም።</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_26">
+        <notes>
+          <note>[260108][Copy][renew_0002]</note>
+        </notes>
+        <segment>
+          <source>Start your upgrade now.</source>
+          <target>ማዘመንዎን አሁን ይጀምሩ።</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_27">
+        <notes>
+          <note>[260108][Copy][renew_0027]</note>
+        </notes>
+        <segment>
+          <source>Remove unused apps or content from {arg1} and try again.</source>
+          <target>ጥቅም ላይ ያልዋሉ መተግበሪያዎችን ወይም ይዘቶችን ከ{arg1} ያስወግዱና እንደገና ይሞክሩ።</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_28">
+        <notes>
+          <note>[260108][Copy][renew_0026]</note>
+        </notes>
+        <segment>
+          <source>Unable to upgrade due to insufficient storage space.</source>
+          <target>በቂ የማከማቻ ቦታ ባለመኖሩ የተነሳ ማዘመን አልተቻለም።</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_29">
+        <notes>
+          <note>[260123][Copy][legacy_legacy-broadcast_1219]</note>
+        </notes>
+        <segment>
+          <source>Update failed due to network disconnection.</source>
+          <target>ዝማኔ አውታረመረብ በመቋረጡ ምክንያት ሳይሳካ ቀርቷል።</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_30">
+        <notes>
+          <note>[260123][Copy][legacy_voice_1045]</note>
+        </notes>
+        <segment>
+          <source>App will close.</source>
+          <target>መተግበሪያ ይዘጋል።</target>
+        </segment>
+      </unit>
+    </group>
+  </file>
+</xliff>

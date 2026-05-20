@@ -1,0 +1,14 @@
+{
+  "name": "xliff-split-merge",
+  "version": "1.0.0",
+  "description": "Utilities for splitting and merging webOS XLIFF files",
+  "license": "Apache-2.0",
+  "author": {
+    "name": "Goun Lee",
+    "email": "goun.lee@lge.com"
+  },
+  "dependencies": {
+    "bats": "^1.13.0",
+    "loctool": "2.32.3"
+  }
+}

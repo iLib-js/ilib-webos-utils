@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" xmlns:mda="urn:oasis:names:tc:xliff:metadata:2.0" srcLang="en-KR" trgLang="ko-KR" version="2.0">
+  <file id="adapp_f1" original="adapp">
+    <group id="adapp_g1" name="javascript">
+      <unit id="adapp_g1_1">
+        <notes>
+          <note>Advertisement</note>
+        </notes>
+        <segment>
+          <source>LG Electronics, Inc.</source>
+          <target>LG전자</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_2">
+        <notes>
+          <note>Advertisement</note>
+        </notes>
+        <segment>
+          <source>Advertisement</source>
+          <target>광고</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_3">
+        <notes>
+          <note>Advertisement</note>
+        </notes>
+        <segment>
+          <source>Exit ad</source>
+          <target>광고 닫기</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_4">
+        <notes>
+          <note>a sentence on the network error popup</note>
+        </notes>
+        <segment>
+          <source>NETWORK DISCONNECTED</source>
+          <target>네트워크 미연결</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_5">
+        <notes>
+          <note>a sentence on the network error popup</note>
+        </notes>
+        <segment>
+          <source>Check the network connection.</source>
+          <target>네트워크 연결을 확인해 주세요.</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_6">
+        <notes>
+          <note>Advertisement</note>
+        </notes>
+        <segment>
+          <source>Check the network connection. Do you want to go to 'Network Setting' for internet connection?</source>
+          <target>네트워크 연결을 확인해 주세요. 인터넷 연결을 위해 '네트워크 설정'으로 이동하시겠습니까?</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_7">
+        <segment>
+          <source>Network is not connected. Please check the network connection.</source>
+          <target>네트워크가 연결되지 않았습니다. 네트워크 상태를 확인해 주세요.</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_8">
+        <segment>
+          <source>more</source>
+          <target>더 보기</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_9">
+        <notes>
+          <note>Advertisement</note>
+        </notes>
+        <segment>
+          <source>Sponsored ad</source>
+          <target>배너 광고</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_10">
+        <segment>
+          <source>button</source>
+          <target>버튼</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_11">
+        <notes>
+          <note>copy strings from tips by WEBOSLOCAL-6094</note>
+        </notes>
+        <segment>
+          <source>NO</source>
+          <target>아니요</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_12">
+        <notes>
+          <note>Advertisement</note>
+        </notes>
+        <segment>
+          <source>No</source>
+          <target>아니요</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_13">
+        <notes>
+          <note>copy strings from tips by WEBOSLOCAL-6094</note>
+        </notes>
+        <segment>
+          <source>YES</source>
+          <target>예</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_14">
+        <notes>
+          <note>Advertisement</note>
+        </notes>
+        <segment>
+          <source>Yes</source>
+          <target>예</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_15">
+        <notes>
+          <note>Advertisement</note>
+        </notes>
+        <segment>
+          <source>Service is temporarily unavailable. Try again later.</source>
+          <target>일시적으로 서비스를 이용할 수 없습니다. 잠시 후 다시 시도해 주세요.</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_16">
+        <notes>
+          <note>a sentence on the temporary error popup</note>
+        </notes>
+        <segment>
+          <source>TEMPORARY PROBLEM</source>
+          <target>일시적인 오류</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_17">
+        <segment>
+          <source>This app is no longer supported.</source>
+          <target>해당 앱은 이제 사용할 수 없습니다.</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_18">
+        <notes>
+          <note>Advertisement</note>
+        </notes>
+        <segment>
+          <source>OK</source>
+          <target>확인</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_19">
+        <notes>
+          <note>[from_ID]</note>
+        </notes>
+        <segment>
+          <source>Network is disconnected</source>
+          <target>네트워크 연결이 해제되었습니다.</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_20">
+        <notes>
+          <note>[from_ID]</note>
+        </notes>
+        <segment>
+          <source>Check network connection.</source>
+          <target>네트워크 연결 상태를 확인하세요.</target>
+        </segment>
+      </unit>
+    </group>
+  </file>
+</xliff>

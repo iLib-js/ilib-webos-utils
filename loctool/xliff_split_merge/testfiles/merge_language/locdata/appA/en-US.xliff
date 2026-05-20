@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en-KR" trgLang="en-US">
+  <file id="appA_f1" original="appA">
+    <group id="appA_g1" name="javascript">
+      <unit id="appA_g1_1">
+        <segment>
+          <source>OK</source>
+          <target>OK</target>
+        </segment>
+      </unit>
+      <unit id="appA_g1_2">
+        <segment>
+          <source>Time Settings</source>
+          <target>Time Settings</target>
+        </segment>
+      </unit>
+    </group>
+  </file>
+</xliff>

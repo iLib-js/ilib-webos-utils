@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" xmlns:mda="urn:oasis:names:tc:xliff:metadata:2.0" version="2.0" srcLang="en-KR" trgLang="en-US">
+  <file id="appB_f1" original="appB">
+    <group id="appB_g1" name="cpp">
+      <unit id="appB_g1_1">
+        <segment>
+          <source>No</source>
+          <target>No</target>
+        </segment>
+      </unit>
+      <unit id="appB_g1_2">
+        <segment>
+          <source>Yes</source>
+          <target>Yes</target>
+        </segment>
+      </unit>
+      <unit id="appB_g1_3">
+        <mda:metadata>
+            <mda:metaGroup category="device-type">
+            <mda:meta type="Monitor">"Monitor" NOT AVAILABLE</mda:meta>
+            <mda:meta type="Box">"Box" NOT AVAILABLE</mda:meta>
+            <mda:meta type="SoundBar">"SoundBar" NOT AVAILABLE</mda:meta>
+            </mda:metaGroup>
+        </mda:metadata>
+        <segment>
+            <source>NOT AVAILABLE</source>
+            <target>NOT AVAILABLE</target>
+        </segment>
+    </unit>
+    </group>
+  </file>
+</xliff>
