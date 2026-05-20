@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# xliff-split-merge.sh - Merge, merge_language, and split webOS XLIFF files using loctool
+
+SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
+
 # Display help message
 show_help() {
     echo "Usage: $0 <COMMAND> [OPTIONS]"
@@ -181,7 +185,6 @@ fi
 # Locate loctool and define run_loctool():
 #   1. npm standalone install  → $SCRIPT_DIR/node_modules/.bin/loctool  (direct bin)
 #   2. pnpm workspace          → loctool.js under node_modules/.pnpm    (via node)
-SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 
 if [ -f "$SCRIPT_DIR/node_modules/.bin/loctool" ]; then
     LOCTOOL_BIN="$SCRIPT_DIR/node_modules/.bin/loctool"
@@ -214,7 +217,7 @@ case "$COMMAND" in
         DIR_CURRENT_ABS=$(realpath "$CURRENT_DIR")
 
         # Traverse all .xliff files in CURRENT_DIR
-        find "$DIR_CURRENT_ABS" -type f -name "*.xliff" | while read -r FILE_CURRENT; do
+        while IFS= read -r FILE_CURRENT; do
             # Get the relative path of the file from CURRENT_DIR
             REL_PATH="${FILE_CURRENT#$DIR_CURRENT_ABS/}"
 
@@ -237,7 +240,7 @@ case "$COMMAND" in
             else
                 echo "SKIPPED: $FILE_INPUT does not exist."
             fi
-        done
+        done < <(find "$DIR_CURRENT_ABS" -type f -name "*.xliff" | sort)
         ;;
     merge_language)
         echo "[merge_language] Merging LANG_XLIFF files for language from multiple apps ..."

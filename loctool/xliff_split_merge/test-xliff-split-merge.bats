@@ -4,7 +4,7 @@
 
 # Setup function to prepare test environment
 setup() {
-  SCRIPT_DIR="$(dirname "$BATS_TEST_FILENAME")"
+  SCRIPT_DIR="$(cd "$(dirname "$BATS_TEST_FILENAME")" && pwd)"
   XLIFF_SPLIT_MERGE_SH="$SCRIPT_DIR/xliff-split-merge.sh"
   TESTFILES_DIR="$SCRIPT_DIR/testfiles"
   OUTPUT_DIR_BASE="$SCRIPT_DIR/output_"
@@ -14,7 +14,6 @@ setup() {
 # Cleanup function to remove test artifacts
 teardown() {
   rm -rf ${OUTPUT_DIR_BASE}* 2>/dev/null || true
-  echo "teardown"
 }
 
 check_file_exists() {
@@ -126,7 +125,7 @@ check_status() {
 @test "Test - xliff-split-merge.sh non-existent directory" {
   local test_name="nonexistent_dir"
 
-  run "$XLIFF_SPLIT_MERGE_SH" split_component --input ./nonexistent_dir --output "${OUTPUT_DIR_BASE}nonexistent"
+  run "$XLIFF_SPLIT_MERGE_SH" split_component --input "$SCRIPT_DIR/nonexistent_dir" --output "${OUTPUT_DIR_BASE}nonexistent"
 
   [ "$status" -ne 0 ]
 }

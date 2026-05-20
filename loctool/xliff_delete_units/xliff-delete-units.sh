@@ -8,6 +8,7 @@ SCRIPT_START_TIME=$(date +%s)
 
 # Locate loctool: check npm standalone first, then pnpm workspace
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+XLIFF_STYLE=(-2 --xliffStyle webOS)
 
 if [ -f "$SCRIPT_DIR/node_modules/.bin/loctool" ]; then
     LOCTOOL_BIN="$SCRIPT_DIR/node_modules/.bin/loctool"
@@ -35,7 +36,7 @@ fi
 # - Code/comments/logs in English per team convention.
 # -----------------------------------------------------------------------------
 
-usage() {
+show_help() {
   cat <<'USAGE'
 Usage:
   xliff-delete-units.sh --inputPath <input-path> --outputPath <output-path> [--criteria "<criteria>" | --criteriaFile <excel-file>] [--dry-run]
@@ -73,7 +74,7 @@ DRY_RUN=false
 CRITERIA_BY_PROJECT=""
 
 # Parse args
-if [ "$#" -eq 0 ]; then usage; exit 0; fi
+if [ "$#" -eq 0 ]; then show_help; exit 0; fi
 
 while [ "$#" -gt 0 ]; do
   case "$1" in
@@ -96,7 +97,7 @@ while [ "$#" -gt 0 ]; do
     --dry-run)
       DRY_RUN=true; shift ;;
     -h|--help)
-      usage; exit 0 ;;
+      show_help; exit 0 ;;
     *)
       echo "Error: Unknown argument: $1"
       echo "Use --help for usage information."
@@ -207,9 +208,9 @@ if [ -n "$CRITERIA" ]; then
     if [ -f "$file" ]; then
       echo "[INFO] Processing file: $file"
       if [ "$DRY_RUN" = "true" ]; then
-        echo "[DRY] run_loctool select \"$CRITERIA\" \"$file\" \"$file\" --prune -2 --xliffStyle webOS"
+        echo "[DRY] run_loctool select \"$CRITERIA\" \"$file\" \"$file\" --prune ${XLIFF_STYLE[*]}"
       else
-        run_loctool select "$CRITERIA" "$file" "$file" --prune -2 --xliffStyle webOS
+        run_loctool select "$CRITERIA" "$file" "$file" --prune "${XLIFF_STYLE[@]}"
         echo "[INFO] Processed $file"
       fi
     fi
@@ -232,9 +233,9 @@ elif [ -n "$CRITERIA_FILE" ] && [ -f "$CRITERIA_BY_PROJECT" ]; then
         if [ -f "$file" ]; then
           echo "[INFO] Processing file: $file"
           if [ "$DRY_RUN" = "true" ]; then
-            echo "[DRY] run_loctool select \"$criteria_value\" \"$file\" \"$file\" --prune -2 --xliffStyle webOS"
+            echo "[DRY] run_loctool select \"$criteria_value\" \"$file\" \"$file\" --prune ${XLIFF_STYLE[*]}"
           else
-            run_loctool select "$criteria_value" "$file" "$file" --prune -2 --xliffStyle webOS
+            run_loctool select "$criteria_value" "$file" "$file" --prune "${XLIFF_STYLE[@]}"
             echo "[INFO] Processed $file"
           fi
         fi

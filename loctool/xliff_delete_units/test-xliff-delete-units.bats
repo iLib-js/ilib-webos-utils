@@ -3,7 +3,7 @@
 # test-xliff-delete-units.bats - Tests for xliff-delete-units.sh
 
 setup() {
-  SCRIPT_DIR="$(dirname "$BATS_TEST_FILENAME")"
+  SCRIPT_DIR="$(cd "$(dirname "$BATS_TEST_FILENAME")" && pwd)"
   XLIFF_DELETE_UNITS_SH="$SCRIPT_DIR/xliff-delete-units.sh"
   TESTFILES_DIR="$SCRIPT_DIR/testfiles"
   OUTPUT_DIR_BASE="$SCRIPT_DIR/output_"
@@ -212,7 +212,7 @@ check_status() {
 @test "Test - non-existent --inputPath exits non-zero" {
   run "$XLIFF_DELETE_UNITS_SH" \
     --criteria "key=^More$" \
-    --inputPath ./nonexistent_dir \
+    --inputPath "$SCRIPT_DIR/nonexistent_dir" \
     --outputPath "${OUTPUT_DIR_BASE}criteria"
   [ "$status" -ne 0 ]
 }
@@ -230,7 +230,7 @@ check_status() {
 
 @test "Test - non-existent --criteriaFile exits non-zero" {
   run "$XLIFF_DELETE_UNITS_SH" \
-    --criteriaFile ./nonexistent.xlsx \
+    --criteriaFile "$SCRIPT_DIR/nonexistent.xlsx" \
     --inputPath "$TESTFILES_DIR/localization-data" \
     --outputPath "${OUTPUT_DIR_BASE}criteria"
   [ "$status" -ne 0 ]
