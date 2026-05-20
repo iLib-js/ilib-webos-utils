@@ -150,7 +150,7 @@ if [ -n "$CRITERIA_FILE" ]; then
   # Create a temp file for Python output
   TEMP_CRITERIA=$(mktemp)
   TEMP_CRITERIA_ERR=$(mktemp)
-  python3 parse_criteria_excel.py "$CRITERIA_FILE" > "$TEMP_CRITERIA" 2> "$TEMP_CRITERIA_ERR" || {
+  python3 "$SCRIPT_DIR/parse_criteria_excel.py" "$CRITERIA_FILE" > "$TEMP_CRITERIA" 2> "$TEMP_CRITERIA_ERR" || {
     echo "Error: Failed to parse criteria file"
     echo "[parse_criteria_excel.py stderr]:"
     cat "$TEMP_CRITERIA_ERR"
