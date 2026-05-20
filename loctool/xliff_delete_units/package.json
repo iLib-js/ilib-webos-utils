@@ -1,11 +1,15 @@
 {
   "name": "xliff-split-merge",
   "version": "1.0.0",
-  "description": "Utilities for splitting and merging webOS XLIFF files",
+  "description": "Utilities for Deleting units from webOS XLIFF files using criteria",
   "license": "Apache-2.0",
+  "scripts": {
+    "execute-sample": "./xliff-delete-units.sh -f testfiles/StringCT_sample.xlsx -i testfiles/localization-data -o ./output",
+    "test": "bats test-xliff-delete-units.bats"
+  },
   "author": {
-    "name": "Goun Lee",
-    "email": "goun.lee@lge.com"
+    "name": "Seounmi Jin",
+    "email": "seonmi1.jin@lge.com"
   },
   "dependencies": {
     "bats": "^1.13.0",
