@@ -65,6 +65,42 @@ Examples:
 USAGE
 }
 
+ensure_python_excel_deps() {
+  if ! command -v python3 >/dev/null 2>&1; then
+    echo "Error: python3 is required when using --criteriaFile."
+    exit 1
+  fi
+
+  if ! python3 -m pip --version >/dev/null 2>&1; then
+    echo "[INFO] pip is not available. Attempting to install pip with ensurepip..."
+    if ! python3 -m ensurepip --upgrade --user >/dev/null 2>&1; then
+      echo "Error: pip is required but could not be installed automatically."
+      echo "Please install pip for python3 and re-run this command."
+      exit 1
+    fi
+
+    if ! python3 -m pip --version >/dev/null 2>&1; then
+      echo "Error: pip installation did not complete successfully."
+      exit 1
+    fi
+  fi
+
+  if python3 -c "import pandas, openpyxl" 2>/dev/null; then
+    return 0
+  fi
+
+  echo "[INFO] Installing pandas and openpyxl for --criteriaFile support..."
+  if ! python3 -m pip install --user pandas openpyxl; then
+    echo "Error: Failed to install pandas/openpyxl. Please check your Python/pip setup."
+    exit 1
+  fi
+
+  if ! python3 -c "import pandas, openpyxl" 2>/dev/null; then
+    echo "Error: pandas/openpyxl still unavailable after installation."
+    exit 1
+  fi
+}
+
 # Defaults
 INPUT_PATH=""
 OUTPUT_PATH=""
@@ -148,6 +184,8 @@ fi
 # If criteriaFile is given, parse Excel and group by project
 # Note: Using temporary file instead of process substitution for sh compatibility
 if [ -n "$CRITERIA_FILE" ]; then
+  ensure_python_excel_deps
+
   # Create a temp file for Python output
   TEMP_CRITERIA=$(mktemp)
   TEMP_CRITERIA_ERR=$(mktemp)

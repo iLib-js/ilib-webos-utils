@@ -69,41 +69,4 @@ if [ ! -f "$SCRIPT_DIR/node_modules/.bin/loctool" ]; then
   exit 1
 fi
 
-# -----------------------------------------------
-# Step 4: Install bats (test runner)
-# -----------------------------------------------
-if command -v bats >/dev/null 2>&1; then
-  echo "bats $(bats --version) already available. Skipping installation."
-else
-  echo "Installing bats..."
-  npm install -g bats
-  if ! command -v bats >/dev/null 2>&1; then
-    echo "Error: bats was not installed correctly."
-    echo "Please check your network connection and re-run this script."
-    exit 1
-  fi
-fi
-
-# -----------------------------------------------
-# Step 5: Install pandas and openpyxl for Python
-# -----------------------------------------------
-if command -v python3 >/dev/null 2>&1; then
-  echo "Checking for pandas and openpyxl..."
-  if python3 -c "import pandas, openpyxl" 2>/dev/null; then
-    echo "pandas and openpyxl already installed."
-  else
-    echo "Installing pandas and openpyxl via pip..."
-    python3 -m pip install --user pandas openpyxl
-    if python3 -c "import pandas, openpyxl" 2>/dev/null; then
-      echo "pandas $(python3 -c 'import pandas; print(pandas.__version__)')"
-      echo "openpyxl $(python3 -c 'import openpyxl; print(openpyxl.__version__)')"
-    else
-      echo "Error: Failed to install pandas or openpyxl. Please check your Python/pip setup."
-      exit 1
-    fi
-  fi
-else
-  echo "Warning: python3 not found. Skipping pandas/openpyxl installation."
-fi
-
 echo "✅ Setup complete!"
