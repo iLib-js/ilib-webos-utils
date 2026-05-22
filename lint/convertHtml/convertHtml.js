@@ -28,6 +28,15 @@ const DEFAULT_OUTPUT_DIR = './';
 //const TOTAL_RESULT_FILENAME = '0.total-result.html';
 const TOTAL_RESULT_FILENAME = 'index.html';
 const APP_RESULTS_SUBDIR = 'apps';
+const CATEGORIES_SUBDIR = 'categories';
+
+import { SENTENCE_ENDING_CATEGORIES, MANUAL_CATEGORIES, classifySentenceEnding, countSubcategories } from './sentenceEndingClassifier.js';
+import { QUOTE_STYLE_CATEGORIES, QUOTE_STYLE_MANUAL_CATEGORIES, classifyQuoteStyle, countQuoteSubcategories } from './quoteStyleClassifier.js';
+
+const RULE_CLASSIFIERS = [
+    { rule: 'resource-sentence-ending', categories: SENTENCE_ENDING_CATEGORIES, manualCategories: MANUAL_CATEGORIES },
+    { rule: 'resource-quote-style', categories: QUOTE_STYLE_CATEGORIES, manualCategories: QUOTE_STYLE_MANUAL_CATEGORIES },
+];
 
 // Rule descriptions — add or update entries here manually
 const RULE_DESCRIPTIONS = {
@@ -80,6 +89,7 @@ const outDir = options.outputDirectory || DEFAULT_OUTPUT_DIR;
 const version = options.version || '';
 
 let totalSummary = [];
+let categoryDetails = {};
 
 // Ensure output directory exists
 ensureOutputDirectory(outDir);
@@ -116,6 +126,7 @@ function processDirectory(dir) {
         if (!stat.isDirectory()) throw new Error("Invalid directory");
         walkDirectory(dir);
         writeTotalSummaryResult(totalSummary);
+        writeCategoryPages();
     } catch (err) {
         console.error(`Directory error: ${err.message}`);
         process.exit(1);
@@ -151,6 +162,39 @@ function writeTotalSummaryResult(sumJsonData) {
 
     fs.writeFileSync(path.join(outDir, "total-result.json"), JSON.stringify(sorted, null, 2), 'utf8');
     fs.writeFileSync(path.join(outDir, TOTAL_RESULT_FILENAME), html, 'utf8');
+}
+
+function writeCategoryPages() {
+    const catDir = path.join(outDir, CATEGORIES_SUBDIR);
+    if (!fs.existsSync(catDir)) fs.mkdirSync(catDir, { recursive: true });
+
+    const fmt = new Intl.NumberFormat("en-US");
+
+    const allCategories = { ...SENTENCE_ENDING_CATEGORIES, ...QUOTE_STYLE_CATEGORIES };
+    const allManual = new Set([...MANUAL_CATEGORIES, ...QUOTE_STYLE_MANUAL_CATEGORIES]);
+
+    for (const [cat, items] of Object.entries(categoryDetails)) {
+        const marker = allManual.has(cat) ? ' *' : '';
+        const desc = allCategories[cat] || '';
+        const html = [
+            getHeader(`Category: ${cat}`),
+            getHtmlStyle(),
+            buildPageHeader(`${cat}${marker}`),
+            `<p style="color:#718096;margin-top:-8px;margin-bottom:24px;">${escapeHtml(desc)}</p>`,
+            `<div class="stat-cards">
+    <div class="stat-card total">
+      <div class="stat-label">Total Issues</div>
+      <div class="stat-value">${fmt.format(items.length)}</div>
+    </div>
+  </div>`,
+            `<div id="detail-section" class="card"><h2>Detailed Information</h2>`,
+            ...items.map(formatDetailResult),
+            `</div>`,
+            getFooter()
+        ].join('');
+
+        fs.writeFileSync(path.join(catDir, `${cat}-result.html`), html, 'utf8');
+    }
 }
 
 function buildTotalSummaryTable(data) {
@@ -228,6 +272,7 @@ function buildTotalSummaryTable(data) {
       <tbody>${ruleTotalRows}</tbody>
     </table>
   </div>
+  ${buildSubcategoryBreakdown(data, fmt)}
   <div class="card">
     <label><input type="checkbox" id="toggleNoIssues"> Show only apps with errors or warnings</label>
     <table>
@@ -237,6 +282,45 @@ function buildTotalSummaryTable(data) {
   </div>`;
 }
 
+
+function buildSubcategoryBreakdown(data, fmt) {
+    let html = '';
+    for (const { rule, categories, manualCategories } of RULE_CLASSIFIERS) {
+        const subcatTotal = data.reduce((acc, item) => {
+            const cats = item.subcategories?.[rule];
+            if (!cats) return acc;
+            for (const [cat, cnt] of Object.entries(cats)) {
+                acc[cat] = (acc[cat] || 0) + cnt;
+            }
+            return acc;
+        }, {});
+
+        if (Object.keys(subcatTotal).length === 0) continue;
+
+        const rows = Object.entries(subcatTotal)
+            .sort((a, b) => b[1] - a[1])
+            .map(([cat, cnt]) => {
+                const marker = manualCategories.has(cat) ? ' *' : '';
+                const catLink = `<a href="./${CATEGORIES_SUBDIR}/${escapeHtml(cat)}-result.html">${escapeHtml(cat)}${marker}</a>`;
+                return `
+    <tr>
+      <td class="col-rule">${catLink}</td>
+      <td class="col-count">${fmt.format(cnt)}</td>
+      <td class="col-desc">${escapeHtml(categories[cat] || '')}</td>
+    </tr>`;
+            }).join('');
+
+        html += `
+  <div class="card">
+    <h2>${escapeHtml(rule)} Breakdown</h2>
+    <table>
+      <thead><tr><th class="col-rule">Category</th><th class="col-count">Count</th><th class="col-desc">Description</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  </div>`;
+    }
+    return html;
+}
 
 function buildPageHeader(title) {
     const sub = version
@@ -265,7 +349,27 @@ function convertToHtml(jsonFile) {
         const json = JSON.parse(fs.readFileSync(jsonFile, 'utf-8'));
         const summary = createSummaryInfo(json.summary);
 
-        if (json.summary.score !== 100) summary.details = countRuleViolations(json.details);
+        if (json.summary.score !== 100) {
+            summary.details = countRuleViolations(json.details);
+            summary.subcategories = {
+                ...countSubcategories(json.details),
+                ...countQuoteSubcategories(json.details),
+            };
+        }
+
+        // Annotate each detail with its category and app name
+        for (const item of json.details) {
+            item._appName = json.summary.projectName;
+            if (item.ruleName === 'resource-sentence-ending') {
+                item._category = classifySentenceEnding(item.description, item.highlight, item.source);
+                if (!categoryDetails[item._category]) categoryDetails[item._category] = [];
+                categoryDetails[item._category].push(item);
+            } else if (item.ruleName === 'resource-quote-style') {
+                item._category = classifyQuoteStyle(item.description);
+                if (!categoryDetails[item._category]) categoryDetails[item._category] = [];
+                categoryDetails[item._category].push(item);
+            }
+        }
 
         totalSummary.push(summary);
         generateHtmlOutput(json, summary);
@@ -290,6 +394,7 @@ function countRuleViolations(details) {
     }, {});
 }
 
+
 function generateHtmlOutput(json, summaryInfo) {
     const html = [
         getHeader(`ilib-lint Result for webOS Apps`),
@@ -297,6 +402,7 @@ function generateHtmlOutput(json, summaryInfo) {
         getScript("rule-filter.js"),
         getSummary(json.summary),
         getRules(json.rules),
+        getCategoryFilter(json.details),
         getDetailResults(json.details, errorsOnly),
         getFooter()
     ].join('');
@@ -381,12 +487,21 @@ function formatDetailResult(res) {
 
     const autofix = res?.fix?.applied || 'unavailable';
 
+    const category = res._category || '';
+    const categoryLabel = category
+        ? `<span class="category-label">${escapeHtml(category)}</span>`
+        : '';
+
+    const appRow = res._appName
+        ? `<tr><td class="detail-key">App</td><td class="highlight">${escapeHtml(res._appName)}</td></tr>\n    `
+        : '';
+
     return `
-<div class="detail-card" data-rule="${escapeHtml(res.ruleName)}">
-  <div class="detail-header ${severityClass}">${res.severity.toUpperCase()}</div>
+<div class="detail-card" data-rule="${escapeHtml(res.ruleName)}" data-category="${escapeHtml(category)}">
+  <div class="detail-header ${severityClass}">${res.severity.toUpperCase()}${categoryLabel}</div>
   <table class="detail-table">
   <tbody>
-    <tr><td class="detail-key">Rule</td><td>${ruleCell}</td></tr>
+    ${appRow}<tr><td class="detail-key">Rule</td><td>${ruleCell}</td></tr>
     <tr><td class="detail-key">File</td><td>${escapeHtml(res.path)}</td></tr>
     <tr><td class="detail-key">Key</td><td>${escapeHtml(res.key)}</td></tr>
     <tr><td class="detail-key">Source</td><td>${escapeHtml(res.source)}</td></tr>
@@ -395,6 +510,39 @@ function formatDetailResult(res) {
     <tr><td class="detail-key">More info</td><td><a href="${escapeHtml(res.link)}" target="_blank">${escapeHtml(res.link)}</a></td></tr>
     <tr><td class="detail-key">Auto-fix</td><td>${escapeHtml(autofix)}</td></tr>
   </tbody>
+  </table>
+</div>`;
+}
+
+function getCategoryFilter(details) {
+    const catCounts = {};
+    for (const item of details) {
+        if (item._category) {
+            catCounts[item._category] = (catCounts[item._category] || 0) + 1;
+        }
+    }
+    if (Object.keys(catCounts).length === 0) return '';
+
+    const allCategories = { ...SENTENCE_ENDING_CATEGORIES, ...QUOTE_STYLE_CATEGORIES };
+    const allManual = new Set([...MANUAL_CATEGORIES, ...QUOTE_STYLE_MANUAL_CATEGORIES]);
+
+    const fmt = new Intl.NumberFormat("en-US");
+    const rows = Object.entries(catCounts)
+        .sort((a, b) => b[1] - a[1])
+        .map(([cat, cnt]) => {
+            const marker = allManual.has(cat) ? ' *' : '';
+            return `<tr><td><label><input type="checkbox" class="category-check" value="${escapeHtml(cat)}">${escapeHtml(cat)}${marker}</label></td>
+         <td class="col-count">${fmt.format(cnt)}</td>
+         <td class="col-desc">${escapeHtml(allCategories[cat] || '')}</td></tr>`;
+        }).join('');
+
+    return `
+<div class="card">
+  <h2>Sub-Categories</h2>
+  <button id="cat-select-all">Select All</button><button id="cat-unselect-all" class="secondary">Deselect All</button>
+  <table class="compact">
+    <thead><tr><th>Category</th><th class="col-count">Count</th><th class="col-desc">Description</th></tr></thead>
+    <tbody>${rows}</tbody>
   </table>
 </div>`;
 }

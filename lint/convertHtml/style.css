@@ -184,7 +184,20 @@ button:active { transform: scale(0.97); }
 button.secondary { background-color: #edf2f7; color: #4a5568; }
 button.secondary:hover { background-color: #e2e8f0; }
 
-input.rule-check { margin-right: 8px; vertical-align: middle; }
+input.rule-check, input.category-check { margin-right: 8px; vertical-align: middle; }
+
+/* ============ Category Label ============ */
+.category-label {
+  display: inline-block;
+  margin-left: 12px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  background-color: rgba(255,255,255,0.25);
+  vertical-align: middle;
+}
 
 /* ============ Detail Cards ============ */
 #detail-section.card { padding: 24px 28px 12px; }

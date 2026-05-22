@@ -19,32 +19,58 @@
 
 document.addEventListener("DOMContentLoaded", function () {
   const ruleChecks = document.querySelectorAll(".rule-check");
+  const categoryChecks = document.querySelectorAll(".category-check");
   const detailCards = document.querySelectorAll("#detail-section .detail-card");
   const selectAllBtn = document.getElementById("select-all");
   const unselectAllBtn = document.getElementById("unselect-all");
+  const catSelectAllBtn = document.getElementById("cat-select-all");
+  const catUnselectAllBtn = document.getElementById("cat-unselect-all");
 
-  // Default: check all rules → show all details
   ruleChecks.forEach(c => c.checked = true);
+  categoryChecks.forEach(c => c.checked = true);
 
   ruleChecks.forEach(chk => chk.addEventListener("change", filterDetails));
+  categoryChecks.forEach(chk => chk.addEventListener("change", filterDetails));
 
-  selectAllBtn.addEventListener("click", () => {
-    ruleChecks.forEach(c => c.checked = true);
-    filterDetails();
-  });
-
-  unselectAllBtn.addEventListener("click", () => {
-    ruleChecks.forEach(c => c.checked = false);
-    filterDetails();
-  });
+  if (selectAllBtn) {
+    selectAllBtn.addEventListener("click", () => {
+      ruleChecks.forEach(c => c.checked = true);
+      filterDetails();
+    });
+  }
+  if (unselectAllBtn) {
+    unselectAllBtn.addEventListener("click", () => {
+      ruleChecks.forEach(c => c.checked = false);
+      filterDetails();
+    });
+  }
+  if (catSelectAllBtn) {
+    catSelectAllBtn.addEventListener("click", () => {
+      categoryChecks.forEach(c => c.checked = true);
+      filterDetails();
+    });
+  }
+  if (catUnselectAllBtn) {
+    catUnselectAllBtn.addEventListener("click", () => {
+      categoryChecks.forEach(c => c.checked = false);
+      filterDetails();
+    });
+  }
 
   function filterDetails() {
-    const selected = new Set(
+    const selectedRules = new Set(
       [...document.querySelectorAll(".rule-check:checked")].map(c => c.value)
     );
+    const selectedCategories = new Set(
+      [...document.querySelectorAll(".category-check:checked")].map(c => c.value)
+    );
+    const hasCategories = categoryChecks.length > 0;
 
     detailCards.forEach(card => {
-      card.style.display = selected.has(card.dataset.rule) ? "" : "none";
+      const ruleMatch = selectedRules.has(card.dataset.rule);
+      const category = card.dataset.category;
+      const categoryMatch = !hasCategories || !category || selectedCategories.has(category);
+      card.style.display = (ruleMatch && categoryMatch) ? "" : "none";
     });
   }
 
