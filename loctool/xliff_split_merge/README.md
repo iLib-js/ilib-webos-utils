@@ -1,4 +1,4 @@
-# xliff_split_merge.sh
+# xliff-split-merge.sh
 
 This Bash script provides utilities for managing XLIFF files used in localization workflows.
 It supports merging and splitting operations across multiple components and languages using the loctool.js utility.
@@ -17,7 +17,7 @@ It supports merging and splitting operations across multiple components and lang
 ## Usage
 
 ```
-./xliff_split_merge.sh <COMMAND> <INPUT_DIR> [OUTPUT_DIR] [CURRENT_DIR (only for merge)]
+./xliff-split-merge.sh <COMMAND> <INPUT_DIR> [OUTPUT_DIR] [CURRENT_DIR (only for merge)]
 ```
 
 ### Commands
@@ -27,7 +27,7 @@ It supports merging and splitting operations across multiple components and lang
 Merges XLIFF files from INPUT_DIR with those in CURRENT_DIR, saving results to OUTPUT_DIR.
 
 ```
-./xliff_split_merge.sh merge <INPUT_DIR> <OUTPUT_DIR> <CURRENT_DIR>
+./xliff-split-merge.sh merge <INPUT_DIR> <OUTPUT_DIR> <CURRENT_DIR>
 ```
 
 #### 2. merge_language
@@ -35,7 +35,7 @@ Merges XLIFF files from INPUT_DIR with those in CURRENT_DIR, saving results to O
 Merges XLIFF files for the same language across multiple apps in INPUT_DIR.
 
 ```
-./xliff_split_merge.sh merge_language <INPUT_DIR> [OUTPUT_DIR]
+./xliff-split-merge.sh merge_language <INPUT_DIR> [OUTPUT_DIR]
 ```
 
 If OUTPUT_DIR is not specified, it defaults to `<INPUT_DIR>--results`.
@@ -45,7 +45,7 @@ If OUTPUT_DIR is not specified, it defaults to `<INPUT_DIR>--results`.
 Splits merged XLIFF files in INPUT_DIR into separate components and saves them to OUTPUT_DIR.
 
 ```
-./xliff_split_merge.sh split_component <INPUT_DIR> [OUTPUT_DIR]
+./xliff-split-merge.sh split_component <INPUT_DIR> [OUTPUT_DIR]
 ```
 
 If OUTPUT_DIR is not specified, it defaults to `<INPUT_DIR>--results`.
@@ -65,7 +65,7 @@ If OUTPUT_DIR is not specified, it defaults to `<INPUT_DIR>--results`.
 ## Example
 
 ```
-./xliff_split_merge.sh merge_language ./localization-data ./output_merge_language
+./xliff-split-merge.sh merge_language ./localization-data ./output_merge_language
 ```
 
 This merges all xliff files for each language across multiple apps in ./localization-data and saves them to ./output_merge_language.
@@ -83,5 +83,5 @@ npm install -g bats
 ### Running Tests
 
 ```
-bats test_xliff_split_merge.bats
+bats test-xliff-split-merge.bats
 ```
