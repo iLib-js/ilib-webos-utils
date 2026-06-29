@@ -5,10 +5,11 @@
   "license": "Apache-2.0",
   "scripts": {
     "execute-sample": "./xliff-delete-units.sh -f testfiles/StringCT_sample.xlsx -i testfiles/localization-data -o ./output",
+    "clean": "rm -rf ./output",
     "test": "bats test-xliff-delete-units.bats"
   },
   "author": {
-    "name": "Seounmi Jin",
+    "name": "Seonmi Jin",
     "email": "seonmi1.jin@lge.com"
   },
   "dependencies": {

@@ -5,10 +5,11 @@
   "license": "Apache-2.0",
   "scripts": {
     "execute-sample": "./xliff-split-merge.sh merge -i testfiles/merge/input -o ./output_merge -c testfiles/merge/current",
+    "clean": "rm -rf ./output*",
     "test": "bats test-xliff-split-merge.bats"
   },
   "author": {
-    "name": "Seounmi Jin",
+    "name": "Seonmi Jin",
     "email": "seonmi1.jin@lge.com"
   },
   "dependencies": {
