@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" xmlns:mda="urn:oasis:names:tc:xliff:metadata:2.0" srcLang="en-KR" trgLang="ko-KR" version="2.0">
+  <file id="renewupdate_f1" original="renewupdate">
+    <group id="renewupdate_g1" name="javascript">
+      <unit id="renewupdate_g1_1">
+        <notes>
+          <note>[251121_Copy][tips_0317]</note>
+        </notes>
+        <segment>
+          <source>webOS Re:New Program</source>
+          <target>webOS 리뉴(Re:New) 프로그램</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_2">
+        <notes>
+          <note>[251121_Copy][settings_general_0368]</note>
+        </notes>
+        <segment>
+          <source>Do you want to proceed?</source>
+          <target>진행하시겠습니까?</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_3">
+        <notes>
+          <note>[251121_Copy][tar_0030]</note>
+        </notes>
+        <segment>
+          <source>Later</source>
+          <target>나중에</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_4">
+        <notes>
+          <note>[251121_Copy][legacy_common_1092]</note>
+        </notes>
+        <segment>
+          <source>Yes</source>
+          <target>예</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_5">
+        <notes>
+          <note>[251121_Copy][legacy_common_1093]</note>
+        </notes>
+        <segment>
+          <source>No</source>
+          <target>아니요</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_6">
+        <notes>
+          <note>[251121_Copy][legacy_common_1042]</note>
+        </notes>
+        <segment>
+          <source>Close</source>
+          <target>닫기</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_7">
+        <notes>
+          <note>[251121_Copy][chatbot_0278]</note>
+        </notes>
+        <segment>
+          <source>Do you want to go to Network Settings now to check the connection?</source>
+          <target>'네트워크 설정'으로 이동해 연결 상태를 확인하시겠습니까?</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_8">
+        <notes>
+          <note>[251121_Copy][legacy_common_1131]</note>
+        </notes>
+        <segment>
+          <source>Network Settings</source>
+          <target>네트워크 설정</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_9">
+        <notes>
+          <note>[251121_Copy][legacy_common_1051]</note>
+        </notes>
+        <segment>
+          <source>Cancel</source>
+          <target>취소</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_10">
+        <mda:metadata>
+          <mda:metaGroup category="device-type">
+            <mda:meta type="Monitor">모니터를 끄면 업그레이드를 시작합니다.</mda:meta>
+            <mda:meta type="Projector">프로젝터를 끄면 업그레이드를 시작합니다.</mda:meta>
+            <mda:meta type="StanbyME">스탠바이미를 끄면 업그레이드를 시작합니다.</mda:meta>
+          </mda:metaGroup>
+        </mda:metadata>
+        <notes>
+          <note>[251203_webOS26MR1_1st][renew_0013]</note>
+        </notes>
+        <segment>
+          <source>Upgrade will begin when the %deviceType% is turned off.</source>
+          <target>TV를 끄면 업그레이드를 시작합니다.</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_11">
+        <notes>
+          <note>[251203_webOS26MR1_1st][renew_0016]</note>
+        </notes>
+        <segment>
+          <source>Starting upgrade.</source>
+          <target>업그레이드를 시작합니다.</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_12">
+        <notes>
+          <note>[251203_webOS26MR1_1st][renew_0005]</note>
+        </notes>
+        <segment>
+          <source>Upgrade to {arg1} and experience the new webOS.</source>
+          <target>{arg1}(으)로 업그레이드하고 새로워진 webOS를 경험해 보세요.</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_13">
+        <notes>
+          <note>[251203_webOS26MR1_1st][renew_0010]</note>
+        </notes>
+        <segment>
+          <source>Exit the current screen without upgrading.</source>
+          <target>업그레이드 없이 현재 화면을 종료합니다.</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_14">
+        <notes>
+          <note>[251203_webOS26MR1_1st][renew_0008]</note>
+        </notes>
+        <segment>
+          <source>Upgrade while powered off</source>
+          <target>꺼져 있을 때 업그레이드</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_15">
+        <notes>
+          <note>[251203_webOS26MR1_1st][renew_0006]</note>
+        </notes>
+        <segment>
+          <source>Enhanced smarter AI and new smart features will make your daily life even more special.</source>
+          <target>더욱 강화된 AI와 새로운 스마트 기능들이 당신의 일상을 더 특별하게 만들 거예요.</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_16">
+        <notes>
+          <note>[251203_webOS26MR1_1st][renew_0007]</note>
+        </notes>
+        <segment>
+          <source>Upgrade now and explore the completely new platform.</source>
+          <target>지금 업그레이드하고 완전히 새로워진 플랫폼을 즐겨보세요.</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_17">
+        <notes>
+          <note>[251203_webOS26MR1_1st][renew_0011]</note>
+        </notes>
+        <segment>
+          <source>View Details</source>
+          <target>상세 내용 보기</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_18">
+        <mda:metadata>
+          <mda:metaGroup category="device-type">
+            <mda:meta type="Monitor">모니터가 꺼져 있을 때 업그레이드를 진행합니다.</mda:meta>
+            <mda:meta type="Projector">프로젝터가 꺼져 있을 때 업그레이드를 진행합니다.</mda:meta>
+            <mda:meta type="StanbyME">스탠바이미가 꺼져 있을 때 업그레이드를 진행합니다.</mda:meta>
+          </mda:metaGroup>
+        </mda:metadata>
+        <notes>
+          <note>[251203_webOS26MR1_1st][renew_0012]</note>
+        </notes>
+        <segment>
+          <source>The upgrade will run while your %deviceType% is off.</source>
+          <target>TV가 꺼져 있을 때 업그레이드를 진행합니다.</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_19">
+        <notes>
+          <note>[251203_webOS26MR1_1st][renew_0014]</note>
+        </notes>
+        <segment>
+          <source>You can start the upgrade right now.</source>
+          <target>지금 바로 업그레이드를 시작할 수 있습니다.</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_20">
+        <notes>
+          <note>[251203_webOS26MR1_1st][renew_0015]</note>
+        </notes>
+        <segment>
+          <source>The upgrade is in progress in the background.</source>
+          <target>업그레이드는 백그라운드에서 진행합니다.</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_21">
+        <notes>
+          <note>[251203_webOS26MR1_1st][renew_0009]</note>
+        </notes>
+        <segment>
+          <source>Upgrade Now</source>
+          <target>지금 업그레이드</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_22">
+        <notes>
+          <note>[251203_webOS26MR1_1st][renew_0020]</note>
+        </notes>
+        <segment>
+          <source>Unable to upgrade because the network is not connected.</source>
+          <target>네트워크가 연결되지 않아 업그레이드할 수 없습니다.</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_23">
+        <notes>
+          <note>[251208_Copy][legacy_common_1101]</note>
+        </notes>
+        <segment>
+          <source>OK</source>
+          <target>확인</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_24">
+        <notes>
+          <note>[260108_webOS26MR1_2nd][renew_0025]</note>
+        </notes>
+        <segment>
+          <source>Please connect a USB and try again.</source>
+          <target>USB 연결 후 다시 시도해 주세요.</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_25">
+        <notes>
+          <note>[260108_webOS26MR1_2nd][renew_0024]</note>
+        </notes>
+        <segment>
+          <source>Unable to upgrade because the USB is not connected.</source>
+          <target>USB가 연결되지 않아 업그레이드할 수 없습니다.</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_26">
+        <notes>
+          <note>[260108][Copy][renew_0002]</note>
+        </notes>
+        <segment>
+          <source>Start your upgrade now.</source>
+          <target>지금 업그레이드를 시작해 보세요.</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_27">
+        <notes>
+          <note>[260108][Copy][renew_0027]</note>
+        </notes>
+        <segment>
+          <source>Remove unused apps or content from {arg1} and try again.</source>
+          <target>사용하지 않는 앱이나 {arg1}의 콘텐츠를 삭제한 뒤, 다시 시도해 주세요.</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_28">
+        <notes>
+          <note>[260108][Copy][renew_0026]</note>
+        </notes>
+        <segment>
+          <source>Unable to upgrade due to insufficient storage space.</source>
+          <target>저장 공간이 부족하여 업그레이드할 수 없습니다.</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_29">
+        <notes>
+          <note>[260123][Copy][legacy_legacy-broadcast_1219]</note>
+        </notes>
+        <segment>
+          <source>Update failed due to network disconnection.</source>
+          <target>네트워크 연결이 끊어져 업데이트할 수 없습니다.</target>
+        </segment>
+      </unit>
+      <unit id="renewupdate_g1_30">
+        <notes>
+          <note>[260123][Copy][legacy_voice_1045]</note>
+        </notes>
+        <segment>
+          <source>App will close.</source>
+          <target>앱이 종료됩니다.</target>
+        </segment>
+      </unit>
+    </group>
+  </file>
+</xliff>

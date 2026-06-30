@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" xmlns:mda="urn:oasis:names:tc:xliff:metadata:2.0" srcLang="en-KR" trgLang="af-ZA" version="2.0">
+  <file id="adapp_f1" original="adapp">
+    <group id="adapp_g1" name="javascript">
+      <unit id="adapp_g1_1">
+        <notes>
+          <note>Advertisement</note>
+        </notes>
+        <segment>
+          <source>Sponsored ad</source>
+          <target>Geborgde advertensie</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_2">
+        <notes>
+          <note>Advertisement</note>
+        </notes>
+        <segment>
+          <source>Exit ad</source>
+          <target>Uitgang-advertensie</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_3">
+        <segment>
+          <source>button</source>
+          <target>knoppie</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_4">
+        <notes>
+          <note>Advertisement</note>
+        </notes>
+        <segment>
+          <source>OK</source>
+          <target>OK</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_5">
+        <segment>
+          <source>more</source>
+          <target>meer</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_6">
+        <notes>
+          <note>a sentence on the network error popup</note>
+        </notes>
+        <segment>
+          <source>NETWORK DISCONNECTED</source>
+          <target>NETWERK ONTKOPPEL</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_7">
+        <notes>
+          <note>a sentence on the network error popup</note>
+        </notes>
+        <segment>
+          <source>Check the network connection.</source>
+          <target>Gaan die netwerkverbinding na.</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_8">
+        <notes>
+          <note>a sentence on the temporary error popup</note>
+        </notes>
+        <segment>
+          <source>TEMPORARY PROBLEM</source>
+          <target>TYDELIKE PROBLEEM</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_9">
+        <notes>
+          <note>Advertisement</note>
+        </notes>
+        <segment>
+          <source>Service is temporarily unavailable. Try again later.</source>
+          <target>Diens is tydelik onbeskikbaar. Probeer weer later.</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_10">
+        <notes>
+          <note>Advertisement</note>
+        </notes>
+        <segment>
+          <source>LG Electronics, Inc.</source>
+          <target>LG Electronics, Inc.</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_11">
+        <notes>
+          <note>Advertisement</note>
+        </notes>
+        <segment>
+          <source>Advertisement</source>
+          <target>Advertensie</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_12">
+        <segment>
+          <source>Network is not connected. Please check the network connection.</source>
+          <target>Netwerk is nie verbind nie. Kontroleer asseblief die netwerkverbinding.</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_13">
+        <notes>
+          <note>Advertisement</note>
+        </notes>
+        <segment>
+          <source>Check the network connection. Do you want to go to 'Network Setting' for internet connection?</source>
+          <target>Gaan die netwerkverbinding na. Wil u na ‘Netwerkinstelling’ vir ’n internetverbinding gaan?</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_14">
+        <notes>
+          <note>copy strings from tips by WEBOSLOCAL-6094</note>
+        </notes>
+        <segment>
+          <source>YES</source>
+          <target>JA</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_15">
+        <notes>
+          <note>copy strings from tips by WEBOSLOCAL-6094</note>
+        </notes>
+        <segment>
+          <source>NO</source>
+          <target>NEE</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_16">
+        <notes>
+          <note>Advertisement</note>
+        </notes>
+        <segment>
+          <source>Yes</source>
+          <target>Ja</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_17">
+        <notes>
+          <note>Advertisement</note>
+        </notes>
+        <segment>
+          <source>No</source>
+          <target>Nee</target>
+        </segment>
+      </unit>
+      <unit id="adapp_g1_18">
+        <notes>
+          <note>Advertisement</note>
+        </notes>
+        <segment>
+          <source>This app is no longer supported.</source>
+          <target>Hierdie toepassing word nie meer ondersteun nie.</target>
+        </segment>
+      </unit>
+    </group>
+  </file>
+</xliff>

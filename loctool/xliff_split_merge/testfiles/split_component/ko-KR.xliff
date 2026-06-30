@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" xmlns:mda="urn:oasis:names:tc:xliff:metadata:2.0" srcLang="en-KR" trgLang="ko-KR" version="2.0">
+  <file id="appA_f1" original="appA">
+    <group id="appA_g1" name="javascript">
+      <unit id="appA_g1_1">
+        <segment>
+          <source>OK</source>
+          <target>확인</target>
+        </segment>
+      </unit>
+      <unit id="appA_2">
+        <segment>
+          <source>Time Settings</source>
+          <target>시간 설정</target>
+        </segment>
+      </unit>
+    </group>
+  </file>
+  <file id="appB_f2" original="appB">
+    <group id="appB_g2" name="cpp">
+      <unit id="appB_g2_1">
+        <segment>
+          <source>No</source>
+          <target>아니오</target>
+        </segment>
+      </unit>
+      <unit id="appB_g2_2">
+        <segment>
+          <source>Yes</source>
+          <target>예</target>
+        </segment>
+      </unit>
+      <unit id="appB_g2_3">
+        <mda:metadata>
+          <mda:metaGroup category="device-type">
+            <mda:meta type="Monitor">"Monitor" 이용이 불가능합니다</mda:meta>
+            <mda:meta type="Box">"Box" 이용이 불가능합니다</mda:meta>
+            <mda:meta type="SoundBar">"SoundBar" 이용이 불가능합니다</mda:meta>
+          </mda:metaGroup>
+        </mda:metadata>
+        <segment>
+          <source>NOT AVAILABLE</source>
+          <target>이용이 불가능합니다</target>
+        </segment>
+      </unit>
+    </group>
+  </file>
+  <file id="appC_f3" original="appC">
+    <group id="appC_g3" name="x-dart">
+      <unit id="appC_g3_1">
+        <segment>
+          <source>OK</source>
+          <target>확인</target>
+        </segment>
+      </unit>
+      <unit id="appC_g3_2" name="login">
+        <segment>
+          <source>Device Sign In</source>
+          <target>기기 로그인</target>
+        </segment>
+      </unit>
+      <unit id="appC_g3_3" name="login">
+        <segment>
+          <source>Sign In</source>
+          <target>로그인</target>
+        </segment>
+      </unit>
+    </group>
+    <group id="appC_g4" name="x-json">
+      <unit id="appC_g4_1">
+        <notes>
+          <note>for json</note>
+        </notes>
+        <segment>
+          <source>OK</source>
+          <target>확인</target>
+        </segment>
+      </unit>
+    </group>
+  </file>
+</xliff>
