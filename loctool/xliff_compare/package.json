@@ -1,0 +1,19 @@
+{
+  "name": "xliff-compare",
+  "version": "1.0.0",
+  "description": "Compare two directories of webOS XLIFF files and output modified/added/deleted differences",
+  "license": "Apache-2.0",
+  "scripts": {
+    "execute-sample": "./xliff-compare.sh --from testfiles/from --to testfiles/to --output ./output_compare",
+    "clean": "rm -rf ./output*",
+    "test": "bats test-xliff-compare.bats"
+  },
+  "author": {
+    "name": "Seonmi Jin",
+    "email": "seonmi1.jin@lge.com"
+  },
+  "dependencies": {
+    "bats": "^1.13.0",
+    "loctool": "2.33.1"
+  }
+}
