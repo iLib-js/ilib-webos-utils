@@ -191,3 +191,52 @@ check_status() {
   [ "$status" -ne 0 ]
   [[ "$output" =~ "Unknown option" ]]
 }
+
+# ── Missing option values (regression: previously hung in an infinite loop) ────
+
+@test "Test - --from as last argument exits non-zero (no hang)" {
+  run "$XLIFF_COMPARE_SH" --from
+  [ "$status" -ne 0 ]
+  [[ "$output" =~ "requires a valid value" ]]
+}
+
+@test "Test - -o as last argument exits non-zero (no hang)" {
+  run "$XLIFF_COMPARE_SH" -o
+  [ "$status" -ne 0 ]
+  [[ "$output" =~ "requires a valid value" ]]
+}
+
+@test "Test - flag immediately followed by another flag exits non-zero" {
+  run "$XLIFF_COMPARE_SH" --from --to "$TESTFILES_DIR/to"
+  [ "$status" -ne 0 ]
+  [[ "$output" =~ "requires a valid value" ]]
+}
+
+@test "Test - empty equals value exits non-zero" {
+  run "$XLIFF_COMPARE_SH" --from=
+  [ "$status" -ne 0 ]
+  [[ "$output" =~ "requires a valid value" ]]
+}
+
+@test "Test - equals value starting with dash exits non-zero" {
+  run "$XLIFF_COMPARE_SH" -f=-x
+  [ "$status" -ne 0 ]
+  [[ "$output" =~ "requires a valid value" ]]
+}
+
+# ── Stale output cleanup (regression: previous results must not leak in) ───────
+
+@test "Test - stale results from a previous run are cleared" {
+  local out="${OUTPUT_DIR_BASE}stale"
+
+  # Simulate leftover output from an earlier run for an app since removed.
+  mkdir -p "$out/deleted/appB"
+  echo "stale" > "$out/deleted/appB/ko-KR.xliff"
+
+  run "$XLIFF_COMPARE_SH" --from "$TESTFILES_DIR/from" --to "$TESTFILES_DIR/to" --output "$out"
+  check_status "stale_cleanup" $status
+
+  # The stale file must be gone; current results must exist.
+  [ ! -f "$out/deleted/appB/ko-KR.xliff" ]
+  check_file_exists "stale_cleanup" "$out/modified/appA/ko-KR.xliff"
+}

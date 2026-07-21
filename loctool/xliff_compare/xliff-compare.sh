@@ -2,6 +2,8 @@
 
 # xliff_compare.sh - Compare two directories of webOS XLIFF files and output differences
 
+set -euo pipefail
+
 FROM_DIR=""
 TO_DIR=""
 OUTPUT_DIR=""
@@ -28,32 +30,47 @@ if [ "$#" -lt 1 ]; then
     exit 0
 fi
 
+# Validate an option value: reject empty or flag-like ("-" prefixed) values.
+#   $1 = flag name (for the error message)   $2 = value to check
+require_value() {
+    if [ -z "$2" ] || [ "${2#-}" != "$2" ]; then
+        echo "Error: $1 requires a valid value." >&2
+        exit 1
+    fi
+}
+
 while [ "$#" -gt 0 ]; do
     case "$1" in
         --from|-f)
+            require_value "$1" "${2:-}"
             FROM_DIR="${2%/}"
             shift 2
             ;;
         --from=*|-f=*)
             FROM_DIR="${1#*=}"
+            require_value "${1%%=*}" "$FROM_DIR"
             FROM_DIR="${FROM_DIR%/}"
             shift
             ;;
         --to|-t)
+            require_value "$1" "${2:-}"
             TO_DIR="${2%/}"
             shift 2
             ;;
         --to=*|-t=*)
             TO_DIR="${1#*=}"
+            require_value "${1%%=*}" "$TO_DIR"
             TO_DIR="${TO_DIR%/}"
             shift
             ;;
         --output|-o)
+            require_value "$1" "${2:-}"
             OUTPUT_DIR="${2%/}"
             shift 2
             ;;
         --output=*|-o=*)
             OUTPUT_DIR="${1#*=}"
+            require_value "${1%%=*}" "$OUTPUT_DIR"
             OUTPUT_DIR="${OUTPUT_DIR%/}"
             shift
             ;;
@@ -123,6 +140,9 @@ fi
 
 XLIFF_STYLE=(-2 --xliffStyle webOS)
 
+# Clear script-owned category dirs so stale results from a previous run
+# (e.g. an app since removed from both FROM and TO) don't mix into this output.
+rm -rf "$OUTPUT_DIR/modified" "$OUTPUT_DIR/added" "$OUTPUT_DIR/deleted"
 mkdir -p "$OUTPUT_DIR"
 
 # Process files that exist in TO_DIR
@@ -139,7 +159,11 @@ while IFS= read -r TO_FILE; do
 
     echo "Comparing: $REL_PATH"
     TEMP_DIR=$(mktemp -d)
-    run_loctool compare "$FROM_FILE" "$TO_FILE" "$TEMP_DIR" "${XLIFF_STYLE[@]}"
+    if ! run_loctool compare "$FROM_FILE" "$TO_FILE" "$TEMP_DIR" "${XLIFF_STYLE[@]}"; then
+        echo "Error: loctool compare failed for $REL_PATH" >&2
+        rm -rf "$TEMP_DIR"
+        exit 1
+    fi
 
     for CATEGORY in modified added deleted; do
         if [ -f "$TEMP_DIR/${CATEGORY}.xliff" ]; then

@@ -2,9 +2,18 @@
 
 # xliff-delete-units.sh - Delete translation units from webOS XLIFF files using loctool select criteria
 
-set -e
+set -euo pipefail
 
 SCRIPT_START_TIME=$(date +%s)
+
+# Validate an option value: reject empty or flag-like ("-" prefixed) values.
+#   $1 = flag name (for the error message)   $2 = value to check
+require_value() {
+    if [ -z "$2" ] || [ "${2#-}" != "$2" ]; then
+        echo "Error: $1 requires a valid value." >&2
+        exit 1
+    fi
+}
 
 # Locate loctool: check npm standalone first, then pnpm workspace
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -115,21 +124,21 @@ if [ "$#" -eq 0 ]; then show_help; exit 0; fi
 while [ "$#" -gt 0 ]; do
   case "$1" in
     -i|--inputPath)
-      INPUT_PATH="$2"; shift 2 ;;
+      require_value "$1" "${2:-}"; INPUT_PATH="$2"; shift 2 ;;
     -i=*|--inputPath=*)
-      INPUT_PATH="${1#*=}"; shift ;;
+      INPUT_PATH="${1#*=}"; require_value "${1%%=*}" "$INPUT_PATH"; shift ;;
     -o|--outputPath)
-      OUTPUT_PATH="$2"; shift 2 ;;
+      require_value "$1" "${2:-}"; OUTPUT_PATH="$2"; shift 2 ;;
     -o=*|--outputPath=*)
-      OUTPUT_PATH="${1#*=}"; shift ;;
+      OUTPUT_PATH="${1#*=}"; require_value "${1%%=*}" "$OUTPUT_PATH"; shift ;;
     -c|--criteria)
-      CRITERIA="$2"; shift 2 ;;
+      require_value "$1" "${2:-}"; CRITERIA="$2"; shift 2 ;;
     -c=*|--criteria=*)
-      CRITERIA="${1#*=}"; shift ;;
+      CRITERIA="${1#*=}"; require_value "${1%%=*}" "$CRITERIA"; shift ;;
     -f|--criteriaFile)
-      CRITERIA_FILE="$2"; shift 2 ;;
+      require_value "$1" "${2:-}"; CRITERIA_FILE="$2"; shift 2 ;;
     -f=*|--criteriaFile=*)
-      CRITERIA_FILE="${1#*=}"; shift ;;
+      CRITERIA_FILE="${1#*=}"; require_value "${1%%=*}" "$CRITERIA_FILE"; shift ;;
     --dry-run)
       DRY_RUN=true; shift ;;
     -h|--help)

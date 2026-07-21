@@ -2,7 +2,18 @@
 
 # xliff-split-merge.sh - Merge, merge_language, and split webOS XLIFF files using loctool
 
+set -euo pipefail
+
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
+
+# Validate an option value: reject empty or flag-like ("-" prefixed) values.
+#   $1 = flag name (for the error message)   $2 = value to check
+require_value() {
+    if [ -z "$2" ] || [ "${2#-}" != "$2" ]; then
+        echo "Error: $1 requires a valid value." >&2
+        exit 1
+    fi
+}
 
 # Display help message
 show_help() {
@@ -54,28 +65,34 @@ while [ "$#" -gt 0 ]; do
     case "$1" in
         # input option (merge: new/updated files, others: command input)
         --input|-i)
+            require_value "$1" "${2:-}"
             INPUT_DIR="${2%/}"
             shift 2
             ;;
         --input=*|-i=*)
             INPUT_DIR="${1#*=}"
+            require_value "${1%%=*}" "$INPUT_DIR"
             INPUT_DIR="${INPUT_DIR%/}"
             shift
             ;;
         --current|-c|-cur)
+            require_value "$1" "${2:-}"
             CURRENT_DIR="$2"
             shift 2
             ;;
         --current=*|-c=*|-cur=*)
             CURRENT_DIR="${1#*=}"
+            require_value "${1%%=*}" "$CURRENT_DIR"
             shift
             ;;
         --output|-o)
+            require_value "$1" "${2:-}"
             OUTPUT_DIR="$2"
             shift 2
             ;;
         --output=*|-o=*)
             OUTPUT_DIR="${1#*=}"
+            require_value "${1%%=*}" "$OUTPUT_DIR"
             shift
             ;;
         --help|-h)
@@ -192,7 +209,7 @@ if [ -f "$SCRIPT_DIR/node_modules/.bin/loctool" ]; then
     echo "LOCTOOL: $LOCTOOL_BIN"
 else
     LOCTOOL_JS=$(find "$SCRIPT_DIR/../../node_modules/.pnpm" -type f -path "*/loctool.js" | grep "/loctool@" | head -n 1)
-    if [ -z "$LOCTOOL_JS" ]; then
+    if [ -z "$LOCTOOL_JS" ] || [ ! -f "$LOCTOOL_JS" ]; then
         echo "Error: loctool not found. Please run pnpm install from the repo root."
         exit 1
     fi
