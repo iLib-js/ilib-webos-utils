@@ -145,3 +145,30 @@ check_status() {
   [[ "$output" =~ "merge_language" ]]
   [[ "$output" =~ "split_component" ]]
 }
+
+# ── Missing option values (regression: set -u must not crash with a raw ───────
+#    "unbound variable"; require_value gives a clear error instead) ────────────
+
+@test "Test - --input as last argument exits non-zero (no unbound crash)" {
+  run "$XLIFF_SPLIT_MERGE_SH" merge --input
+  [ "$status" -ne 0 ]
+  [[ "$output" =~ "requires a valid value" ]]
+}
+
+@test "Test - -o as last argument exits non-zero (no unbound crash)" {
+  run "$XLIFF_SPLIT_MERGE_SH" merge -o
+  [ "$status" -ne 0 ]
+  [[ "$output" =~ "requires a valid value" ]]
+}
+
+@test "Test - flag immediately followed by another flag exits non-zero" {
+  run "$XLIFF_SPLIT_MERGE_SH" merge --input --output "${OUTPUT_DIR_BASE}x"
+  [ "$status" -ne 0 ]
+  [[ "$output" =~ "requires a valid value" ]]
+}
+
+@test "Test - empty equals value exits non-zero" {
+  run "$XLIFF_SPLIT_MERGE_SH" merge --input=
+  [ "$status" -ne 0 ]
+  [[ "$output" =~ "requires a valid value" ]]
+}

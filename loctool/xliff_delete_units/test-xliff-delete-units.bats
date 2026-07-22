@@ -245,3 +245,30 @@ check_status() {
   [ "$status" -ne 0 ]
   [[ "$output" =~ "Unknown" ]]
 }
+
+# ── Missing option values (regression: set -u must not crash with a raw ───────
+#    "unbound variable"; require_value gives a clear error instead) ────────────
+
+@test "Test - --inputPath as last argument exits non-zero (no unbound crash)" {
+  run "$XLIFF_DELETE_UNITS_SH" --inputPath
+  [ "$status" -ne 0 ]
+  [[ "$output" =~ "requires a valid value" ]]
+}
+
+@test "Test - -o as last argument exits non-zero (no unbound crash)" {
+  run "$XLIFF_DELETE_UNITS_SH" -o
+  [ "$status" -ne 0 ]
+  [[ "$output" =~ "requires a valid value" ]]
+}
+
+@test "Test - flag immediately followed by another flag exits non-zero" {
+  run "$XLIFF_DELETE_UNITS_SH" --inputPath --outputPath "${OUTPUT_DIR_BASE}x"
+  [ "$status" -ne 0 ]
+  [[ "$output" =~ "requires a valid value" ]]
+}
+
+@test "Test - empty equals value exits non-zero" {
+  run "$XLIFF_DELETE_UNITS_SH" --inputPath=
+  [ "$status" -ne 0 ]
+  [[ "$output" =~ "requires a valid value" ]]
+}

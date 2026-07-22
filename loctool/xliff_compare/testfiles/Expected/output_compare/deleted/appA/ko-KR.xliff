@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" xmlns:mda="urn:oasis:names:tc:xliff:metadata:2.0" srcLang="en-KR" trgLang="ko-KR" version="2.0">
+  <file id="appA_f1" original="appA">
+    <group id="appA_g1" name="javascript">
+      <unit id="appA_g1_1">
+        <segment>
+          <source>Goodbye</source>
+          <target>잘가</target>
+        </segment>
+      </unit>
+    </group>
+  </file>
+</xliff>
