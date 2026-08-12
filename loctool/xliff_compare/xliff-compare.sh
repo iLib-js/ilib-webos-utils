@@ -110,11 +110,12 @@ if [ ! -d "$TO_DIR" ]; then
 fi
 
 # Validate that directories contain XLIFF files
-if ! find "$FROM_DIR" -type f -name "*.xliff" | grep -q .; then
+# Note: Using find -print -quit instead of find|grep -q to avoid SIGPIPE exit 141 with pipefail.
+if [ -z "$(find "$FROM_DIR" -type f -name "*.xliff" -print -quit)" ]; then
     echo "Error: FROM_DIR has no .xliff files: $FROM_DIR"
     exit 1
 fi
-if ! find "$TO_DIR" -type f -name "*.xliff" | grep -q .; then
+if [ -z "$(find "$TO_DIR" -type f -name "*.xliff" -print -quit)" ]; then
     echo "Error: TO_DIR has no .xliff files: $TO_DIR"
     exit 1
 fi

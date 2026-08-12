@@ -161,21 +161,23 @@ if [ ! -d "$INPUT_DIR" ]; then
 fi
 
 # Validate directory structure based on COMMAND
+# Note: Using find -print -quit instead of find|grep -q to avoid SIGPIPE exit 141
+# with pipefail when find produces many results and grep exits early.
 case "$COMMAND" in
     merge|merge_language)
         # merge and merge_language require app subdirectories with .xliff files
-        if ! find "$INPUT_DIR" -mindepth 1 -maxdepth 1 -type d | grep -q .; then
+        if [ -z "$(find "$INPUT_DIR" -mindepth 1 -maxdepth 1 -type d -print -quit)" ]; then
             echo "Error: INPUT_DIR has no app subdirectories: $INPUT_DIR"
             exit 1
         fi
-        if ! find "$INPUT_DIR" -type f -name "*.xliff" | grep -q .; then
+        if [ -z "$(find "$INPUT_DIR" -type f -name "*.xliff" -print -quit)" ]; then
             echo "Error: INPUT_DIR has no .xliff files in app subdirectories: $INPUT_DIR"
             exit 1
         fi
         ;;
     split_component)
         # split_component requires .xliff files directly in INPUT_DIR
-        if ! find "$INPUT_DIR" -maxdepth 1 -type f -name "*.xliff" | grep -q .; then
+        if [ -z "$(find "$INPUT_DIR" -maxdepth 1 -type f -name "*.xliff" -print -quit)" ]; then
             echo "Error: INPUT_DIR has no .xliff files: $INPUT_DIR"
             exit 1
         fi
@@ -189,11 +191,11 @@ if [ -n "$CURRENT_DIR" ]; then
         exit 1
     fi
     # CURRENT_DIR (for merge) requires app subdirectories with .xliff files
-    if ! find "$CURRENT_DIR" -mindepth 1 -maxdepth 1 -type d | grep -q .; then
+    if [ -z "$(find "$CURRENT_DIR" -mindepth 1 -maxdepth 1 -type d -print -quit)" ]; then
         echo "Error: CURRENT_DIR has no app subdirectories: $CURRENT_DIR"
         exit 1
     fi
-    if ! find "$CURRENT_DIR" -type f -name "*.xliff" | grep -q .; then
+    if [ -z "$(find "$CURRENT_DIR" -type f -name "*.xliff" -print -quit)" ]; then
         echo "Error: CURRENT_DIR has no .xliff files in app subdirectories: $CURRENT_DIR"
         exit 1
     fi
