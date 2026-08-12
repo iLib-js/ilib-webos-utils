@@ -230,10 +230,14 @@ fi
 # Execute command-specific logic
 case "$COMMAND" in
     merge)
-        echo "[merge] Merging input LANG_XLIFF files info current LANG_XLIFF files..."
+        echo "[merge] Merging input LANG_XLIFF files into current LANG_XLIFF files..."
 
         # Convert CURRENT_DIR to absolute path
         DIR_CURRENT_ABS=$(realpath "$CURRENT_DIR")
+
+        MERGED_FILES=()
+        SKIPPED_IDENTICAL=0
+        SKIPPED_MISSING=0
 
         # Traverse all .xliff files in CURRENT_DIR
         while IFS= read -r FILE_CURRENT; do
@@ -243,23 +247,38 @@ case "$COMMAND" in
             FILE_INPUT="$INPUT_DIR/$REL_PATH"
             OUTPUT_FILE="$OUTPUT_DIR/$REL_PATH"
 
-            # Print paths for debugging
-            echo "CURRENT FILE: $FILE_CURRENT"
-            echo "INPUT FILE: $FILE_INPUT"
-            echo "OUTPUT FILE: $OUTPUT_FILE"
-
             # Only merge if the corresponding file exists in INPUT_DIR
             if [ -f "$FILE_INPUT" ]; then
-                # Create the output directory path if it doesn't exist
-                mkdir -p "$(dirname "$OUTPUT_FILE")"
+                # Skip if input and current are identical
+                if cmp -s "$FILE_CURRENT" "$FILE_INPUT"; then
+                    ((SKIPPED_IDENTICAL++)) || true
+                else
+                    # Create the output directory path if it doesn't exist
+                    mkdir -p "$(dirname "$OUTPUT_FILE")"
 
-                # Run the merge function
-                echo "Merging..."
-                run_loctool merge "$OUTPUT_FILE" "$FILE_CURRENT" "$FILE_INPUT" "${XLIFF_STYLE[@]}"
+                    # Run the merge function
+                    run_loctool merge "$OUTPUT_FILE" "$FILE_CURRENT" "$FILE_INPUT" "${XLIFF_STYLE[@]}"
+                    MERGED_FILES+=("$REL_PATH")
+                fi
             else
-                echo "SKIPPED: $FILE_INPUT does not exist."
+                ((SKIPPED_MISSING++)) || true
             fi
         done < <(find "$DIR_CURRENT_ABS" -type f -name "*.xliff" | sort)
+
+        # Print summary
+        echo ""
+        echo "========== Merge Summary =========="
+        echo "Merged: ${#MERGED_FILES[@]}"
+        echo "Skipped (identical): $SKIPPED_IDENTICAL"
+        echo "Skipped (not in input): $SKIPPED_MISSING"
+        if [ "${#MERGED_FILES[@]}" -gt 0 ]; then
+            echo ""
+            echo "Merged files:"
+            for f in "${MERGED_FILES[@]}"; do
+                echo "  $f"
+            done
+        fi
+        echo "==================================="
         ;;
     merge_language)
         echo "[merge_language] Merging LANG_XLIFF files for language from multiple apps ..."
