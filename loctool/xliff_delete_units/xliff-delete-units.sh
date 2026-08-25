@@ -166,7 +166,8 @@ if [ ! -d "$INPUT_PATH" ]; then
 fi
 
 # Validate that INPUT_PATH contains XLIFF files
-if ! find "$INPUT_PATH" -type f -name "*.xliff" | grep -q .; then
+# Note: Using find -print -quit instead of find|grep -q to avoid SIGPIPE exit 141 with pipefail.
+if [ -z "$(find "$INPUT_PATH" -type f -name "*.xliff" -print -quit)" ]; then
   echo "Error: INPUT_PATH has no .xliff files: $INPUT_PATH"
   exit 1
 fi
