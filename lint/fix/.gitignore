@@ -1,0 +1,3 @@
+# Downloaded lint reports (fetch-report.sh output). These are large (tens of MB)
+# and regenerated each run - never commit them.
+*-result.html
