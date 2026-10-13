@@ -17,6 +17,14 @@ It supports direct criteria input and Excel-based criteria input for project-spe
 - Python 3 (required when using --criteriaFile)
 - Python packages: pandas, openpyxl (required when using --criteriaFile)
 
+## Setup
+
+```
+./pre-requisite.sh    # installs Node.js (via NVM if needed) and loctool
+```
+
+After pulling an update that changes the pinned loctool version, re-run `./pre-requisite.sh`; it reinstalls loctool when the installed version no longer matches `package.json`.
+
 ## Usage
 
 ```

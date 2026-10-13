@@ -14,6 +14,14 @@ It supports merging and splitting operations across multiple components and lang
 - Node.js
 - loctool.js (automatically located from ../../node_modules/.pnpm)
 
+## Setup
+
+```
+./pre-requisite.sh    # installs Node.js (via NVM if needed), loctool, and bats
+```
+
+After pulling an update that changes the pinned loctool version, re-run `./pre-requisite.sh`; it reinstalls loctool when the installed version no longer matches `package.json`.
+
 ## Usage
 
 ```
