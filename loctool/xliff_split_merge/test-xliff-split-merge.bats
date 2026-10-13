@@ -63,6 +63,25 @@ check_status() {
   check_diff $test_name ${OUTPUT_DIR_BASE}merge/appA/ko-KR.xliff "$TESTFILES_DIR/Expected/output_merge/appA/ko-KR.xliff"
 }
 
+# Regression: a unit whose name equals its source must keep its name after merge.
+# Guards loctool PR #355 (loctool >= 2.34.1): the webOS xliff serializer used to
+# drop a unit's `name` attribute whenever it equaled the source text. Because
+# `merge` parses and re-serializes the xliff, a unit like name="OK"/source="OK"
+# lost its name on loctool < 2.34.1. The merged output must preserve it.
+@test "Test - xliff-split-merge.sh merge preserves unit name equal to source" {
+  local test_name="merge_preserve_name"
+
+  run "$XLIFF_SPLIT_MERGE_SH" merge --input "$TESTFILES_DIR/merge_preserve/input" --output "${OUTPUT_DIR_BASE}merge_preserve" --current "$TESTFILES_DIR/merge_preserve/current"
+
+  check_status $test_name $status
+  check_file_exists $test_name ${OUTPUT_DIR_BASE}merge_preserve/appA/ko-KR.xliff
+  check_diff $test_name ${OUTPUT_DIR_BASE}merge_preserve/appA/ko-KR.xliff "$TESTFILES_DIR/Expected/output_merge_preserve/appA/ko-KR.xliff"
+
+  # Explicitly assert the name attribute survived (fails on loctool < 2.34.1).
+  run grep -q 'name="OK"' "${OUTPUT_DIR_BASE}merge_preserve/appA/ko-KR.xliff"
+  [ "$status" -eq 0 ]
+}
+
 
 # Test the 'merge_language' command with a single file
 @test "Test - xliff-split-merge.sh merge_language" {

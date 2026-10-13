@@ -149,6 +149,34 @@ check_status() {
   check_diff $test_name ${OUTPUT_DIR_BASE}dryrun/adapp/ko-KR.xliff "$TESTFILES_DIR/localization-data/adapp/ko-KR.xliff"
 }
 
+# ── Regression: unit name equal to source must be preserved ───────────────────
+# Guards loctool PR #355 (loctool >= 2.34.1): the webOS xliff serializer used to
+# drop a unit's `name` attribute whenever it equaled the source text. A surviving
+# unit whose name equals its source (name="OK", source="OK") must keep its `name`
+# after loctool re-serializes the file during a delete/select round trip.
+# With loctool < 2.34.1 the name is dropped and this diff fails.
+@test "Test - name equal to source is preserved after delete round trip" {
+  local test_name="preserve_name"
+  # Delete only the 'More' unit in preserveapp; the name="OK" unit must survive
+  # and retain its name attribute after re-serialization.
+  local CRITERIA="source=^More$,key=^menu_more$,project=^preserveapp$,datatype=^javascript$"
+
+  run "$XLIFF_DELETE_UNITS_SH" \
+    --criteria "$CRITERIA" \
+    --inputPath "$TESTFILES_DIR/localization-data" \
+    --outputPath "${OUTPUT_DIR_BASE}preserve"
+
+  check_status $test_name $status
+
+  check_file_exists $test_name ${OUTPUT_DIR_BASE}preserve/preserveapp/ko-KR.xliff
+  # Expected keeps <unit ... name="OK"> and drops the 'More' unit.
+  check_diff $test_name ${OUTPUT_DIR_BASE}preserve/preserveapp/ko-KR.xliff "$TESTFILES_DIR/Expected/preserveapp/ko-KR.xliff"
+
+  # Explicitly assert the name attribute survived (fails on loctool < 2.34.1).
+  run grep -q 'name="OK"' "${OUTPUT_DIR_BASE}preserve/preserveapp/ko-KR.xliff"
+  [ "$status" -eq 0 ]
+}
+
 # ── Help ──────────────────────────────────────────────────────────────────────
 
 @test "Test - no arguments shows help and exits 0" {
