@@ -149,12 +149,20 @@ check_status() {
   check_diff $test_name ${OUTPUT_DIR_BASE}dryrun/adapp/ko-KR.xliff "$TESTFILES_DIR/localization-data/adapp/ko-KR.xliff"
 }
 
-# ── Regression: unit name equal to source must be preserved ───────────────────
-# Guards loctool PR #355 (loctool >= 2.34.1): the webOS xliff serializer used to
-# drop a unit's `name` attribute whenever it equaled the source text. A surviving
-# unit whose name equals its source (name="OK", source="OK") must keep its `name`
-# after loctool re-serializes the file during a delete/select round trip.
-# With loctool < 2.34.1 the name is dropped and this diff fails.
+# ── Preserve unit name equal to source ────────────────────────────────────────
+# Guards loctool PR #355 (loctool >= 2.34.1). In the webOS xliff style a unit's
+# `name` is only serialized when it was explicitly present in the input (tracked
+# via an `autoKey` flag); a name that merely falls back to the source is omitted.
+# Before 2.34.1 the serializer instead compared source vs key, so an explicit
+# name was dropped whenever it equaled the source text (name="OK", source="OK").
+#
+# This is verified at the script level with a single explicitly-named unit:
+# loctool's merge/select identify units by source+key (not autoKey), so two units
+# sharing the same source+key cannot be kept side by side here — the autoKey
+# distinction itself is covered by loctool's own tests. What this script must
+# guarantee is that a surviving name=source unit keeps its `name` after loctool
+# re-serializes the file during a delete/select round trip. On loctool < 2.34.1
+# the name is dropped and this diff fails.
 @test "Test - name equal to source is preserved after delete round trip" {
   local test_name="preserve_name"
   # Delete only the 'More' unit in preserveapp; the name="OK" unit must survive

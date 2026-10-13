@@ -63,11 +63,19 @@ check_status() {
   check_diff $test_name ${OUTPUT_DIR_BASE}merge/appA/ko-KR.xliff "$TESTFILES_DIR/Expected/output_merge/appA/ko-KR.xliff"
 }
 
-# Regression: a unit whose name equals its source must keep its name after merge.
-# Guards loctool PR #355 (loctool >= 2.34.1): the webOS xliff serializer used to
-# drop a unit's `name` attribute whenever it equaled the source text. Because
-# `merge` parses and re-serializes the xliff, a unit like name="OK"/source="OK"
-# lost its name on loctool < 2.34.1. The merged output must preserve it.
+# Preserve a unit whose name equals its source: it must keep its name after merge.
+# Guards loctool PR #355 (loctool >= 2.34.1). In the webOS xliff style a unit's
+# `name` is only serialized when it was explicitly present in the input (tracked
+# via an `autoKey` flag); a name that merely falls back to the source is omitted.
+# Before 2.34.1 the serializer compared source vs key, so an explicit name was
+# dropped whenever it equaled the source text (name="OK", source="OK").
+#
+# Verified here with a single explicitly-named unit: loctool identifies units by
+# source+key (not autoKey), so two units sharing the same source+key cannot be
+# kept side by side via merge — the autoKey distinction itself is covered by
+# loctool's own tests. Because `merge` parses and re-serializes the xliff, this
+# test guarantees that a name=source unit keeps its `name`; on loctool < 2.34.1
+# it is dropped and this diff fails.
 @test "Test - xliff-split-merge.sh merge preserves unit name equal to source" {
   local test_name="merge_preserve_name"
 
