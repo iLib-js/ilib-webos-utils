@@ -21,6 +21,8 @@ It uses loctool compare to detect modified, added, and deleted translation units
 ./pre-requisite.sh    # installs Node.js (via NVM if needed), loctool, and bats
 ```
 
+After pulling an update that changes the pinned loctool version, re-run `./pre-requisite.sh`; it reinstalls loctool when the installed version no longer matches `package.json`.
+
 ## Usage
 
 ```bash

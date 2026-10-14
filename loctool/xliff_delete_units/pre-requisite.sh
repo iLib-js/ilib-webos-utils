@@ -53,9 +53,14 @@ npm --version
 # -----------------------------------------------
 cd "$SCRIPT_DIR"
 
-if [ -d "node_modules" ]; then
+if [ -d "node_modules/loctool" ] && npm ls loctool >/dev/null 2>&1; then
+  # node_modules exists and the installed loctool satisfies the version in
+  # package.json (npm ls validates the semver range). Nothing to do.
   echo "Dependencies already installed. Skipping npm install."
 else
+  # Either nothing is installed yet, or the installed loctool no longer matches
+  # package.json (e.g. after pulling an update that bumps loctool). Installing
+  # refreshes it so a stale node_modules does not keep an old version.
   echo "Installing dependencies..."
   npm install
 fi
